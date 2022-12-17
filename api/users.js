@@ -1,10 +1,18 @@
 const { Router } = require('express');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const {SECRET_KEY} = process.env;
 
 const userRouter = Router();
 
 const {
-  createUser
+  createUser,
+  findUserByUsername
 } = require('../db')
+
+const comparePassword = async (pw, hash) => {
+  return await bcrypt.compare(pw, hash);
+}
 
 userRouter.get('/', async (req, res) => {
   try {
@@ -15,16 +23,54 @@ userRouter.get('/', async (req, res) => {
   }
 })
 
-userRouter.post('/', async (req, res) => {
+userRouter.post('/register', async (req, res, next) => {
+  try {
+    const userExists = await findUserByUsername(req.body.name);
+
+    if (userExists) {
+      throw {
+        message: 'This user already exists. Try logging in.',
+        error: true
+      };
+    }
+    
+    const results = await createUser(req.body);
+    const token = jwt.sign(results, SECRET_KEY);
+    res.send({
+      data: token,
+      error: false,
+      message: 'You have successfully registered!'
+    })
+  } catch(ex) {
+    console.log('error posting a user in server');
+    next(ex);
+  }
+})
+
+userRouter.post('/login', async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    const results = await createUser(req.body);
-    console.log(results)
-    res.send(results)
+    const results = await findUserByUsername(name);
+    if (comparePassword(password, results.password)) {
+      delete results.password;
+      const token = jwt.sign(results, SECRET_KEY);
+      res.send({
+        data: token,
+        error: false,
+        message: "You have successfully logged in!",
+      });
+    } else {
+      throw {
+        message: 'Incorrect credentials, please try again.',
+        error: true
+      }
+    }
+    
   } catch(ex) {
     console.log('error posting a user in server');
     console.error(ex);
   }
 })
+
 
 module.exports = userRouter;

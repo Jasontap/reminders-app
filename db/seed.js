@@ -41,7 +41,7 @@ const createTables = async () => {
     await client.query(`
       CREATE TABLE users (
         user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
-        name VARCHAR NOT NULL,
+        name VARCHAR UNIQUE NOT NULL,
         email VARCHAR UNIQUE NOT NULL
         CONSTRAINT proper_email CHECK (email ~* '^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
         password VARCHAR NOT NULL
