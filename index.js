@@ -5,9 +5,6 @@ const router = require('./api/index');
 const client = require('./db/client');
 const jwt = require('jsonwebtoken');
 
-// const token = jwt.sign({ foo: 'bar'}, 'shhhhhh');
-// console.log(token)
-
 const server = express();
 
 const PORT = process.env.PORT || 3000;
@@ -20,10 +17,22 @@ server.use((req, res, next) => {
   next();
 })
 
+server.use(async (req, res, next) => {
+  try {
+    throw 'error'
+  } catch(ex) {
+    console.log('error attaching user to request.');
+    next({
+      message: 'Error attaching user to the request.',
+      error: ex
+    })
+  }
+})
+
 server.use('/api', router);
 
 server.get('*', (req, res, next) => {
-  res.send('YOU REACHED THE SERVER')
+  res.send('SOOORY THAT ROUTE DOES NOT EXIST....YET')
 })
 
 server.use((error, req, res, next) => {

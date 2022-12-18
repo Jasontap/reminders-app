@@ -1,18 +1,19 @@
 const client = require('./client');
 const {
   getAllTodos,
-  createTodo
+  createTodo,
+  createUser,
+  createList,
+  getListByUserId
 } = require('./');
 
-const {
-  createUser
-} = require('./');
 
 const dropTables = async () => {
   try {
     console.log('Dropping tables.')
     await client.query(`
       DROP TABLE IF EXISTS todos;
+      DROP TABLE IF EXISTS lists;
       DROP TABLE IF EXISTS users;
     `)
     console.log('Finished dropping tables.')
@@ -33,7 +34,7 @@ const createTables = async () => {
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
       `)
     
-    // checkout out the uuid for the user_id value
+    // check out the uuid for the user_id value
     // email has constraint to verify the email has proper formatting
     // there's other options to verify
     
@@ -47,12 +48,18 @@ const createTables = async () => {
         password VARCHAR NOT NULL
       );
       
+      CREATE TABLE lists (
+        list_id SERIAL PRIMARY KEY,
+        title VARCHAR NOT NULL,
+        owner_id uuid REFERENCES users (user_id)
+      );
+      
       CREATE TABLE todos (
         todo_id SERIAL PRIMARY KEY,
         title VARCHAR NOT NULL,
         comment VARCHAR DEFAULT '',
         "creatorId" uuid REFERENCES users (user_id),
-        list_id INTEGER
+        list_id SERIAL REFERENCES lists (list_id)
       );
       
     `);
@@ -67,6 +74,7 @@ const createTables = async () => {
 
 const createInitialUsers = async () => {
   try {
+    console.log('Creating Initial Users')
     const usersToCreate = [
       {
         name: 'Jason',
@@ -87,6 +95,7 @@ const createInitialUsers = async () => {
     
     await Promise.all(usersToCreate.map(createUser))
     
+    console.log('Finished Creating initial Users.')
   } catch(ex) {
     console.log('error creating initial users!');
     console.error(ex);
@@ -95,37 +104,43 @@ const createInitialUsers = async () => {
 
 const createInitialTodos = async () => {
   try{
+    console.log('Creating initial todos and respective lists')
     const { rows: [user1, user2, user3] } = await client.query(`
       SELECT * FROM users;
     `);
     
     // USER #1 todo seeding (two different lists)
-    await createTodo({title: 'Go Running.', comment: '1- comment', creatorId: user1.user_id, listId: 1 })
-    await createTodo({title: 'Relax.', comment: '', creatorId: user1.user_id, listId: 1 })
-    await createTodo({title: 'Study.', comment: '1- comment', creatorId: user1.user_id, listId: 1 })
+    await createList({title: 'User 1 List 1', ownerId: user1.user_id});
+    await createTodo({title: 'Go Running.', comment: '1- comment', creatorId: user1.user_id, listId: 1 });
+    await createTodo({title: 'Relax.', comment: '', creatorId: user1.user_id, listId: 1 });
+    await createTodo({title: 'Study.', comment: '1- comment', creatorId: user1.user_id, listId: 1 });
     
-    await createTodo({title: 'Replace Tires.', comment: '', creatorId: user1.user_id, listId: 2 })
-    await createTodo({title: 'Prep lecture.', comment: '1- comment', creatorId: user1.user_id, listId: 2 })
+    await createList({title: 'User 1 List 2', ownerId: user1.user_id});
+    await createTodo({title: 'Replace Tires.', comment: '', creatorId: user1.user_id, listId: 2 });
+    await createTodo({title: 'Prep lecture.', comment: '1- comment', creatorId: user1.user_id, listId: 2 });
     
     // USER #2 todo seeding (two different lists)
-    await createTodo({title: 'Go Running - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 })
-    await createTodo({title: 'Relax - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 })
-    await createTodo({title: 'Study - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 })
+    await createList({title: 'User 2 List 1', ownerId: user2.user_id});
+    await createTodo({title: 'Go Running - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 });
+    await createTodo({title: 'Relax - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 });
+    await createTodo({title: 'Study - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 });
     
-    await createTodo({title: 'Replace Tires - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 2 })
-    await createTodo({title: 'Prep lecture - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 2 })
+    await createList({title: 'User 2 List 2', ownerId: user2.user_id});
+    await createTodo({title: 'Replace Tires - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 2 });
+    await createTodo({title: 'Prep lecture - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 2 });
     
     // USER #3 todo seeding (two different lists)
-    await createTodo({title: 'Go Running - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 })
-    await createTodo({title: 'Relax - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 })
-    await createTodo({title: 'Study - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 })
+    await createList({title: 'User 3 List 2', ownerId: user3.user_id});
+    await createTodo({title: 'Go Running - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 });
+    await createTodo({title: 'Relax - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 });
+    await createTodo({title: 'Study - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 });
     
-    await createTodo({title: 'Replace Tires - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 2 })
-    await createTodo({title: 'Prep lecture - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 2 })
+    await createList({title: 'User 3 List 2', ownerId: user3.user_id});
+    await createTodo({title: 'Replace Tires - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 2 });
+    await createTodo({title: 'Prep lecture - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 2 });
     
     
-    // const todos = await getAllTodos();
-    // console.log(todos)
+    console.log('Finished creating initial todos and respective lists')
     
   } catch(ex) {
     console.log('error creating initial todos!');
@@ -149,6 +164,7 @@ const buildDB = async() => {
     await createInitialUsers();
     console.log('-----------------------------------------------')
     await createInitialTodos();
+    console.log('-----------------------------------------------')
     
     console.log('Finished Building DB!');
   } catch(ex) {
