@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const router = require('./api/index');
 const client = require('./db/client');
 const jwt = require('jsonwebtoken');
+const {SECRET_KEY} = process.env;
+const {findUserByUsername} = require('./db');
 
 const server = express();
 
@@ -19,7 +21,16 @@ server.use((req, res, next) => {
 
 server.use(async (req, res, next) => {
   try {
-    throw 'error'
+    const prefix = 'Bearer ';
+    const auth = req.get('Authorization');
+    
+    if (auth) {
+      const token = auth.slice(prefix.length);
+      const userInfo = jwt.verify(token, SECRET_KEY);
+      
+      req.user = userInfo;
+      next(); 
+    }
   } catch(ex) {
     console.log('error attaching user to request.');
     next({
