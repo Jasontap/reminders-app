@@ -24,8 +24,23 @@ const createTodo = async ({title, comment, creatorId, listId}) => {
   }
 }
 
+const getTodosByUserId = async (userId) => {
+  try {
+    const {rows: todos} = await client.query(`
+      SELECT * FROM todos
+      WHERE "creatorId" = $1;
+    `, [userId])
+    
+    return todos;
+  } catch(ex) {
+    console.log('error in getTodosByUserId adapter!');
+    console.error(ex);
+  }
+}
+
 
 module.exports = {
   getAllTodos,
-  createTodo
+  createTodo,
+  getTodosByUserId
 }

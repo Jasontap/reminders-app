@@ -16,8 +16,6 @@ const createList = async ({title, ownerId}) => {
 
 const getListsByUserId = async (userId) => {
   try {
-    
-    console.log('GETTING USER LISTS', userId)
     const {rows: lists} = await client.query(`
       SELECT * FROM lists
       WHERE owner_id = '${userId}';

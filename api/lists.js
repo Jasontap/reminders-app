@@ -2,23 +2,28 @@ const {Router} = require('express');
 const listRouter = Router();
 const {
   getListsByUserId,
-  findUserByUsername
+  getTodosByUserId
 } = require('../db')
+const {requireUser} = require('./utils');
 
 
-listRouter.get('/', async (req, res, next) => {
+listRouter.get('/', requireUser, async (req, res, next) => {
   try {
     const {user} = req;
-    if (user) {
-      const results = await getListsByUserId(user.user_id);
-      res.send(results)
-    } else {
-      res.send({
-        data: [],
-        message: 'You must be logged in.',
-        error: true
+    const results = await getListsByUserId(user.user_id);
+    const todos = await getTodosByUserId(user.user_id);
+    results.forEach((list) => {
+      todos.forEach(todo => {
+        if (todo.list_id === list.list_id) {
+          if (list.todos) {
+            list.todos.push(todo)
+          } else {
+            list.todos = [todo]
+          }
+        }
       })
-    }
+    })
+    res.send(results)
   } catch(ex) {
     console.log('error in GET lists handler');
     next({
