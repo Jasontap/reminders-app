@@ -30,6 +30,8 @@ server.use(async (req, res, next) => {
       
       req.user = userInfo;
       next(); 
+    } else {
+      next();
     }
   } catch(ex) {
     console.log('error attaching user to request.');

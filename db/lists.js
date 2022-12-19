@@ -14,14 +14,16 @@ const createList = async ({title, ownerId}) => {
   }
 }
 
-const getListByUserId = async (userId) => {
+const getListsByUserId = async (userId) => {
   try {
-    const {rows: [list]} = await client.query(`
-      SELECT * FROM lists
-      WHERE owner_id = $1;
-    `, [userId]);
     
-    return list;
+    console.log('GETTING USER LISTS', userId)
+    const {rows: lists} = await client.query(`
+      SELECT * FROM lists
+      WHERE owner_id = '${userId}';
+    `);
+
+    return lists;
   } catch(ex) {
     console.log('error getting list by user id in DB adapter.');
     console.error(ex);
@@ -30,5 +32,5 @@ const getListByUserId = async (userId) => {
 
 module.exports = {
   createList,
-  getListByUserId
+  getListsByUserId
 }
