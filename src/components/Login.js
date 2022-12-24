@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {loginUser} from '../http-methods';
 
-function Login({setToken}) {
+function Login({setToken, navigate}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [pwConfirm, setPWConfirm] = useState('');
@@ -13,8 +13,9 @@ function Login({setToken}) {
     if (response.error) {
       setError(response.message);
     } else {
-      setToken(response.data)
-      window.localStorage.setItem('token', response.data)
+      setToken(response.data);
+      window.localStorage.setItem('token', response.data);
+      navigate('/todos')
     }
   }
   
