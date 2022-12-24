@@ -1,7 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
-const router = require('./api/index');
+const cors = require('cors');
+const router = require('./api');
 const client = require('./db/client');
 const jwt = require('jsonwebtoken');
 const {SECRET_KEY} = process.env;
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 server.use(morgan('dev'));
 server.use(express.json());
+server.use(cors())
 
 server.use((req, res, next) => {
   console.log('HITTING SERVER');

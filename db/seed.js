@@ -121,23 +121,23 @@ const createInitialTodos = async () => {
     
     // USER #2 todo seeding (two different lists)
     await createList({title: 'User 2 List 1', ownerId: user2.user_id});
-    await createTodo({title: 'Go Running - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 });
-    await createTodo({title: 'Relax - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 });
-    await createTodo({title: 'Study - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 1 });
+    await createTodo({title: 'Go Running - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 3 });
+    await createTodo({title: 'Relax - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 3 });
+    await createTodo({title: 'Study - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 3 });
     
     await createList({title: 'User 2 List 2', ownerId: user2.user_id});
-    await createTodo({title: 'Replace Tires - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 2 });
-    await createTodo({title: 'Prep lecture - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 2 });
+    await createTodo({title: 'Replace Tires - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 4 });
+    await createTodo({title: 'Prep lecture - 2.', comment: '2- comment', creatorId: user2.user_id, listId: 4 });
     
     // USER #3 todo seeding (two different lists)
     await createList({title: 'User 3 List 2', ownerId: user3.user_id});
-    await createTodo({title: 'Go Running - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 });
-    await createTodo({title: 'Relax - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 });
-    await createTodo({title: 'Study - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 1 });
+    await createTodo({title: 'Go Running - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 5 });
+    await createTodo({title: 'Relax - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 5 });
+    await createTodo({title: 'Study - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 5 });
     
     await createList({title: 'User 3 List 2', ownerId: user3.user_id});
-    await createTodo({title: 'Replace Tires - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 2 });
-    await createTodo({title: 'Prep lecture - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 2 });
+    await createTodo({title: 'Replace Tires - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 6 });
+    await createTodo({title: 'Prep lecture - 3.', comment: '3- comment', creatorId: user3.user_id, listId: 6 });
     
     
     console.log('Finished creating initial todos and respective lists')

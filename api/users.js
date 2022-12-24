@@ -51,7 +51,8 @@ userRouter.post('/login', async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const results = await findUserByUsername(name);
-    if (comparePassword(password, results.password)) {
+    
+    if (await comparePassword(password, results.password)) {
       delete results.password;
       const token = jwt.sign(results, SECRET_KEY);
       res.send({
@@ -64,11 +65,11 @@ userRouter.post('/login', async (req, res, next) => {
         message: 'Incorrect credentials, please try again.',
         error: true
       }
-    }
+    };
     
   } catch(ex) {
     console.log('error posting a user in server');
-    console.error(ex);
+    next(ex);
   }
 })
 

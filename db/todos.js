@@ -30,7 +30,7 @@ const getTodosByUserId = async (userId) => {
       SELECT * FROM todos
       WHERE "creatorId" = $1;
     `, [userId])
-    
+
     return todos;
   } catch(ex) {
     console.log('error in getTodosByUserId adapter!');

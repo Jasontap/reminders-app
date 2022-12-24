@@ -16,10 +16,12 @@ const createList = async ({title, ownerId}) => {
 
 const getListsByUserId = async (userId) => {
   try {
-    const {rows: lists} = await client.query(`
+    const { rows: lists } = await client.query(`
       SELECT * FROM lists
       WHERE owner_id = '${userId}';
     `);
+    
+    console.log(lists)
 
     return lists;
   } catch(ex) {
