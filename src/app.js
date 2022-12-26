@@ -20,6 +20,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [todoLists, setTodoLists] = useState([]);
   const [allTodos, setAllTodos] = useState([]);
+  const [todosToDisplay, setTodosToDisplay] = useState([]);
   
   const navigate = useNavigate();
   
@@ -40,7 +41,8 @@ function App() {
   
   async function getUsersTodoLists() {
     setTodoLists(await fetchUsersTodoLists(token));
-    setAllTodos(await fetchAllUsersTodos(token));
+    const todos = await fetchAllUsersTodos(token);
+    setAllTodos(todos.data)
   }
 
   useEffect(() => {
@@ -55,26 +57,25 @@ function App() {
   
   return (
     <div>
-      {
-        !token && <Login setToken={setToken} navigate={navigate}/>
-      }
-          <Routes>
-            <Route 
-              path='/todos/:todo-id'
-              element={<Todos allTodos={allTodos}/>}
-            />
-            <Route path='*' element={<NoPage />} />
-          </Routes>
-      {
-        token 
-          && 
+      {!token && <Login setToken={setToken} navigate={navigate} />}
+
+      {token && (
         <div>
           <button onClick={() => logOut()}>Log Out</button>
-          <Lists todoLists={todoLists} setAllTodos={setAllTodos}/>
+          <Lists todoLists={todoLists} setTodosToDisplay={setTodosToDisplay} />
+          <Routes>
+            <Route
+              path="/todos/:todoId"
+              element={
+                <Todos allTodos={allTodos} todosToDisplay={todosToDisplay} />
+              }
+            />
+            <Route path="*" element={<NoPage />} />
+          </Routes>
         </div>
-      }
+      )}
     </div>
-  )
+  );
 }
 
 export default App;
