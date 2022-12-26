@@ -1,5 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import {
+  fetchUsersTodoLists,
+  fetchAllUsersTodos
+} from './http-methods'
 
 import {
   Login
@@ -8,10 +12,12 @@ import {
 function App() {
   const [token, setToken] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [todoLists, setTodoLists] = useState([]);
+  const [allTodos, setAllTodos] = useState([]);
   
   const navigate = useNavigate();
   
-  function isLoggedIn() {
+  function localTokenCheck() {
     const storedToken = window.localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
@@ -25,10 +31,21 @@ function App() {
     setToken('');
     window.localStorage.setItem('token', '');
   }
+  
+  async function getUsersTodoLists() {
+    setTodoLists(await fetchUsersTodoLists(token));
+    setAllTodos(await fetchAllUsersTodos(token));
+  }
 
   useEffect(() => {
-    isLoggedIn();
+    localTokenCheck();
   }, []);
+  
+  useEffect(() => {
+    if (token) {
+      getUsersTodoLists();
+    }
+  }, [token])
   
   return (
     <div>
@@ -36,7 +53,12 @@ function App() {
         !token && <Login setToken={setToken} navigate={navigate}/>
       }
       {
-        token && <button onClick={() => logOut()}>Log Out</button>
+        token 
+          && 
+        <div>
+          <button onClick={() => logOut()}>Log Out</button>
+          {/* <Lists todoLists={todoLists}/> */}
+        </div>
       }
     </div>
   )
