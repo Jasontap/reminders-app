@@ -11,4 +11,15 @@ const requireUser = (req, res, next) => {
   }
 }
 
-module.exports = {requireUser};
+class Message {
+  constructor(data = [], message, error) {
+    this.data = data;
+    this.message = message;
+    this.error = error;
+  }
+}
+
+module.exports = {
+  requireUser,
+  Message
+};

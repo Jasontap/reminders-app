@@ -6,8 +6,14 @@ import {
 } from './http-methods'
 
 import {
-  Login
+  Login,
+  Lists,
+  Todos
 } from './components'
+
+
+function NoPage() {return <div>NO PAGE HERE</div>}
+
 
 function App() {
   const [token, setToken] = useState('');
@@ -52,12 +58,19 @@ function App() {
       {
         !token && <Login setToken={setToken} navigate={navigate}/>
       }
+          <Routes>
+            <Route 
+              path='/todos/:todo-id'
+              element={<Todos allTodos={allTodos}/>}
+            />
+            <Route path='*' element={<NoPage />} />
+          </Routes>
       {
         token 
           && 
         <div>
           <button onClick={() => logOut()}>Log Out</button>
-          {/* <Lists todoLists={todoLists}/> */}
+          <Lists todoLists={todoLists} setAllTodos={setAllTodos}/>
         </div>
       }
     </div>
