@@ -58,3 +58,23 @@ export async function fetchAllUsersTodos(token) {
     console.log('error in fetching users todo Lists')
   }
 }
+
+export async function addTodoToList({todo, listId, token}) {
+  try {
+    const response = fetch(`${BASE_URL}/lists/${listId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        todo
+      })
+    })
+    
+    const result = response.json();
+    
+  } catch(ex) {
+    console.log('error in addingTodoToList http method');
+  }
+}

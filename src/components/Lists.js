@@ -13,7 +13,7 @@ function Lists({todoLists, setTodosToDisplay}) {
         todoLists && todoLists.map(list => {
           return (
             <Link 
-              to={`/todos/${list.list_id}`} 
+              to={`/lists/${list.list_id}`} 
               key={list.list_id}
               onClick={(e) => setListOfTodos(list.list_id)}
             >{list.title}</Link>

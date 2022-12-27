@@ -37,5 +37,17 @@ listRouter.get('/', requireUser, async (req, res, next) => {
   }
 })
 
+listRouter.post('/:listId', requireUser, async (req, res, next) => {
+  try {
+    console.log('REACGHING THE POST TODO TO LIST')
+  } catch(ex) {
+    console.log('error posting a todo to a list in list router')
+    next({
+      message: 'error posting a todo to a list in list router',
+      error: ex
+    })
+  }
+})
+
 
 module.exports = listRouter;

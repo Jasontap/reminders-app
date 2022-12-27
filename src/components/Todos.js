@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
+import AddTodoForm from './AddTodoForm';
 
-function Todos({todosToDisplay}) {
+function Todos({todosToDisplay, token}) {
   const [addTodo, setAddTodo] = useState(false);
   
-   
-  
+  function activateAddTodoForm() {
+    setAddTodo(true);
+  }
+
   return (
     <>
       {
@@ -18,11 +21,11 @@ function Todos({todosToDisplay}) {
         })
       }
       {
-        
+        addTodo && <AddTodoForm token={token}/>
       }
       {
         !!todosToDisplay.length && 
-          <button onClick={() => console.log('prepared to add another task')}>Add a todo</button>
+          <button onClick={() => activateAddTodoForm()}>Add a todo</button>
       }
       <Link to='/'>Close List</Link>
     </>

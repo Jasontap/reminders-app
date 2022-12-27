@@ -65,9 +65,13 @@ function App() {
           <Lists todoLists={todoLists} setTodosToDisplay={setTodosToDisplay} />
           <Routes>
             <Route
-              path="/todos/:todoId"
+              path="/lists/:listId"
               element={
-                <Todos allTodos={allTodos} todosToDisplay={todosToDisplay} />
+                <Todos 
+                  allTodos={allTodos} 
+                  todosToDisplay={todosToDisplay} 
+                  token={token}
+                />
               }
             />
             <Route path="*" element={<NoPage />} />
