@@ -3,7 +3,8 @@ const listRouter = Router();
 
 const {
   getListsByUserId,
-  getTodosByUserId
+  getTodosByUserId,
+  createTodo
 } = require('../db')
 
 const {requireUser} = require('./utils');
@@ -39,7 +40,12 @@ listRouter.get('/', requireUser, async (req, res, next) => {
 
 listRouter.post('/:listId', requireUser, async (req, res, next) => {
   try {
-    console.log('REACGHING THE POST TODO TO LIST')
+    const {listId} = req.params;
+    const {user} = req;
+    const {todo} = req.body;
+    
+    await createTodo({title: todo, comment: '', creatorId: user.user_id, listId})
+    
   } catch(ex) {
     console.log('error posting a todo to a list in list router')
     next({

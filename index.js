@@ -28,10 +28,7 @@ server.use(async (req, res, next) => {
     
     if (auth) {
       const token = auth.slice(prefix.length);
-      if (!token) next({
-        message: 'Token was not provided in http request',
-        error: true
-      })
+    
       const userInfo = jwt.verify(token, SECRET_KEY);
       
       req.user = userInfo;

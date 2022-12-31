@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import './app.css';
 import {
   fetchUsersTodoLists,
   fetchAllUsersTodos
@@ -28,9 +29,6 @@ function App() {
     const storedToken = window.localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
-      console.log('user is logged in already');
-    } else {
-      console.log('user is not logged in yet')
     }
   }
   
@@ -67,10 +65,13 @@ function App() {
             <Route
               path="/lists/:listId"
               element={
-                <Todos 
-                  allTodos={allTodos} 
+                <Todos
                   todosToDisplay={todosToDisplay} 
                   token={token}
+                  navigate={navigate}
+                  getUsersTodoLists={getUsersTodoLists}
+                  setTodosToDisplay={setTodosToDisplay}
+                  todoLists={todoLists}
                 />
               }
             />

@@ -25,7 +25,6 @@ export async function loginUser({username, password}) {
 
 export async function fetchUsersTodoLists(token) {
   try {
-    console.log("hitting http method");
     const response = await fetch(`${BASE_URL}/lists`, {
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +42,6 @@ export async function fetchUsersTodoLists(token) {
 
 export async function fetchAllUsersTodos(token) {
   try {
-    console.log("hitting http method");
     const response = await fetch(`${BASE_URL}/todos`, {
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +59,7 @@ export async function fetchAllUsersTodos(token) {
 
 export async function addTodoToList({todo, listId, token}) {
   try {
-    const response = fetch(`${BASE_URL}/lists/${listId}`, {
+    await fetch(`${BASE_URL}/lists/${listId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,9 +70,28 @@ export async function addTodoToList({todo, listId, token}) {
       })
     })
     
-    const result = response.json();
-    
   } catch(ex) {
     console.log('error in addingTodoToList http method');
+  }
+}
+
+
+export async function destroyTodo({todoId, token}) {
+  try {
+    const response = await fetch(`${BASE_URL}/todos`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        todoId
+      })
+    })
+    
+    const results = response.json();
+    return results;
+  } catch(ex) {
+    console.log('error in deleteTodo http method')
   }
 }

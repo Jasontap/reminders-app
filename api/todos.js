@@ -1,7 +1,10 @@
 const { Router } = require('express');
 const todosRouter = Router();
 const {requireUser, Message} = require('./utils');
-const {getTodosByUserId} = require('../db');
+const {
+  getTodosByUserId,
+  removeTodo
+} = require('../db');
 
 todosRouter.get('/', requireUser, async (req, res, next) => {
   try {
@@ -13,6 +16,19 @@ todosRouter.get('/', requireUser, async (req, res, next) => {
     
   } catch(ex) {
     next(new Message([], 'error getting todos from todosRouter GET', true));
+  }
+})
+
+todosRouter.delete('/', requireUser, async (req, res, next) => {
+  try {
+    const {todoId} = req.body;
+    const {user_id} = req.user;
+    await removeTodo(todoId, user_id);
+    res.send({
+      message: 'success deleting todo!'
+    })
+  } catch(ex) {
+    next(new Message([], 'error deleting todo in todosRouter DETELET', true))
   }
 })
 

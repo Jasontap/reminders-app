@@ -38,9 +38,24 @@ const getTodosByUserId = async (userId) => {
   }
 }
 
+const removeTodo = async (todoId, userId) => {
+  try {
+    await client.query(`
+      DELETE FROM todos
+      WHERE todo_id = $1
+      AND "creatorId" = $2;
+    `, [todoId, userId])
+    
+  } catch(ex) {
+    console.log('error removing todo from database in DB adapter');
+    console.error(ex);
+  }
+}
+
 
 module.exports = {
   getAllTodos,
   createTodo,
-  getTodosByUserId
+  getTodosByUserId,
+  removeTodo
 }

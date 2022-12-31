@@ -36,8 +36,24 @@ const findUserByUsername = async (name) => {
   }
 }
 
+const findUserById = async (userId) => {
+  try {
+    console.log('FINDING USER BY ID', userId)
+    const {rows: [user]} = await client.query(`
+      SELECT * FROM users
+      WHERE user_id = $1;
+    `, [userId])
+    
+    return user;
+  } catch(ex) {
+    console.log('error finding user by ID in the DB adapter');
+    console.log(ex);
+  }
+}
+
 
 module.exports = {
   createUser,
-  findUserByUsername
+  findUserByUsername,
+  findUserById
 }

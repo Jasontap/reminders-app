@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import {useParams} from 'react-router-dom';
 import { addTodoToList } from '../http-methods';
 
-function AddTodoForm({token}) {
+function AddTodoForm({token, setAddTodo, getUsersTodoLists}) {
   const [todo, setTodo] = useState('');
   const {listId} = useParams();
   
   function addTodo(e) {
     e.preventDefault();
-    addTodoToList({todo, listId});
+    addTodoToList({todo, listId, token});
+    getUsersTodoLists();
+    setAddTodo(false);
   }
 
   return (
