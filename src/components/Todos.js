@@ -43,7 +43,7 @@ function Todos({todosToDisplay, navigate, getUsersTodoLists, setTodosToDisplay, 
     window.addEventListener("click", (e) => {
       if (todoEdit && e.target.tagName !== "INPUT") {
         console.log("todo", todoEdit);
-        setTodoEdit("");
+        // setTodoEdit("");
       }
     });
 
