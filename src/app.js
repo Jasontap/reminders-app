@@ -1,19 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, createContext} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './app.css';
 import {
   fetchUsersTodoLists,
   fetchAllUsersTodos
-} from './http-methods'
+} from './http-methods';
 
 import {
   Login,
   Lists,
-  Todos
-} from './components'
+  Todos,
+  EditTodo
+} from './components';
+
+import {
+  TokenContext
+} from './Context';
 
 
-function NoPage() {return <div>NO PAGE HERE</div>}
+function NoPage() {
+  return <div>NO PAGE HERE</div>
+}
 
 
 function App() {
@@ -40,7 +47,7 @@ function App() {
   async function getUsersTodoLists() {
     setTodoLists(await fetchUsersTodoLists(token));
     const todos = await fetchAllUsersTodos(token);
-    setAllTodos(todos.data)
+    setAllTodos(todos.data);
   }
 
   useEffect(() => {
@@ -51,14 +58,14 @@ function App() {
     if (token) {
       getUsersTodoLists();
     }
-  }, [token])
+  }, [token]);
   
   return (
     <div>
       {!token && <Login setToken={setToken} navigate={navigate} />}
 
       {token && (
-        <div>
+        <TokenContext.Provider value={token}>
           <button onClick={() => logOut()}>Log Out</button>
           <Lists todoLists={todoLists} setTodosToDisplay={setTodosToDisplay} />
           <Routes>
@@ -66,8 +73,7 @@ function App() {
               path="/lists/:listId"
               element={
                 <Todos
-                  todosToDisplay={todosToDisplay} 
-                  token={token}
+                  todosToDisplay={todosToDisplay}
                   navigate={navigate}
                   getUsersTodoLists={getUsersTodoLists}
                   setTodosToDisplay={setTodosToDisplay}
@@ -75,9 +81,15 @@ function App() {
                 />
               }
             />
+            <Route
+              path="/lists/:listId/todo/:todoId/edit"
+              element={
+                <EditTodo />
+              }
+            />
             <Route path="*" element={<NoPage />} />
           </Routes>
-        </div>
+        </TokenContext.Provider>
       )}
     </div>
   );

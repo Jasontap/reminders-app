@@ -59,7 +59,7 @@ export async function fetchAllUsersTodos(token) {
 
 export async function addTodoToList({todo, listId, token}) {
   try {
-    await fetch(`${BASE_URL}/lists/${listId}`, {
+    const response = await fetch(`${BASE_URL}/lists/${listId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -69,6 +69,8 @@ export async function addTodoToList({todo, listId, token}) {
         todo
       })
     })
+    
+    return response.json();
     
   } catch(ex) {
     console.log('error in addingTodoToList http method');
@@ -93,5 +95,39 @@ export async function destroyTodo({todoId, token}) {
     return results;
   } catch(ex) {
     console.log('error in deleteTodo http method')
+  }
+}
+
+
+export async function getTodoByTodoId(todoId, token) {
+  try {
+    const response = await fetch(`${BASE_URL}/todos/${todoId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    
+    return response.json();
+  } catch(ex) {
+    console.log('error in getTodoByTodoId http method')
+  }
+}
+
+
+export async function updateTodo(todoId, title, token) {
+  try {
+    await fetch(`${BASE_URL}/todos/${todoId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        title
+      })
+    })
+  } catch(ex) {
+    console.log('error in updateTodo http method')
   }
 }

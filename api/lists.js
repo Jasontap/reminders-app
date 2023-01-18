@@ -44,7 +44,13 @@ listRouter.post('/:listId', requireUser, async (req, res, next) => {
     const {user} = req;
     const {todo} = req.body;
     
-    await createTodo({title: todo, comment: '', creatorId: user.user_id, listId})
+    const newTodo = await createTodo({title: todo, comment: '', creatorId: user.user_id, listId})
+    
+    res.send({
+      data: newTodo,
+      error: false,
+      message: 'successfully added a new todo to a list!'
+    });
     
   } catch(ex) {
     console.log('error posting a todo to a list in list router')
