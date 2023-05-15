@@ -14,7 +14,8 @@ import {
 } from './components';
 
 import {
-  TokenContext
+  TokenContext,
+  UsersTodoLists
 } from './Context';
 
 
@@ -62,35 +63,38 @@ function App() {
   
   return (
     <div>
-      {!token && <Login setToken={setToken} navigate={navigate} />}
+        {!token && <Login setToken={setToken} navigate={navigate} />}
 
-      {token && (
-        <TokenContext.Provider value={token}>
-          <button onClick={() => logOut()}>Log Out</button>
-          <Lists todoLists={todoLists} setTodosToDisplay={setTodosToDisplay} />
-          <Routes>
-            <Route
-              path="/lists/:listId"
-              element={
-                <Todos
-                  todosToDisplay={todosToDisplay}
-                  navigate={navigate}
-                  getUsersTodoLists={getUsersTodoLists}
-                  setTodosToDisplay={setTodosToDisplay}
-                  todoLists={todoLists}
+        {token && (
+          <UsersTodoLists.Provider value={todoLists}>
+            <TokenContext.Provider value={token}>
+              <button onClick={() => logOut()}>Log Out</button>
+              <Lists
+                todoLists={todoLists}
+                setTodosToDisplay={setTodosToDisplay}
+              />
+              <Routes>
+                <Route
+                  path="/lists/:listId"
+                  element={
+                    <Todos
+                      todosToDisplay={todosToDisplay}
+                      navigate={navigate}
+                      getUsersTodoLists={getUsersTodoLists}
+                      setTodosToDisplay={setTodosToDisplay}
+                      todoLists={todoLists}
+                    />
+                  }
                 />
-              }
-            />
-            <Route
-              path="/lists/:listId/todo/:todoId/edit"
-              element={
-                <EditTodo />
-              }
-            />
-            <Route path="*" element={<NoPage />} />
-          </Routes>
-        </TokenContext.Provider>
-      )}
+                <Route
+                  path="/lists/:listId/todo/:todoId/edit"
+                  element={<EditTodo />}
+                />
+                <Route path="*" element={<NoPage />} />
+              </Routes>
+            </TokenContext.Provider>
+          </UsersTodoLists.Provider>
+        )}
     </div>
   );
 }

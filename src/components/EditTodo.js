@@ -12,8 +12,7 @@ function EditTodo({todo, setTodoEdit}) {
   
   async function submitTodo(e) {
     e.preventDefault();
-    await updateTodo(todo_id, todoTitle, token)
-    console.log('submitting updated todo')
+    await updateTodo(todo_id, todoTitle, token);
     setTodoEdit('');
   }
   
