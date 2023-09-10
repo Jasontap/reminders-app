@@ -35,12 +35,10 @@ function App() {
   
   function localTokenCheck() {
     const storedToken = window.localStorage.getItem('token');
-    console.log("TOKEN", typeof storedToken)
+    
     if (storedToken) {
       setToken(storedToken);
-    } else {
-      window.localStorage.removeItem('token');
-    }
+    } 
   }
   
   function logOut() {
