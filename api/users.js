@@ -61,10 +61,10 @@ userRouter.post('/login', async (req, res, next) => {
         message: "You have successfully logged in!",
       });
     } else {
-      throw {
+      next({
         message: 'Incorrect credentials, please try again.',
         error: true
-      }
+      });
     };
     
   } catch(ex) {
