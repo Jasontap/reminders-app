@@ -48,7 +48,11 @@ server.use(async (req, res, next) => {
 server.use('/api', router);
 
 server.get('*', (req, res, next) => {
-  res.send('SOOORY THAT ROUTE DOES NOT EXIST....YET')
+  res.send({
+    data: [],
+    message: 'SOOORY THAT ROUTE DOES NOT EXIST....YET',
+    error: true
+  })
 })
 
 server.use((error, req, res, next) => {

@@ -14,10 +14,13 @@ const getAllTodos = async () => {
 
 const createTodo = async ({title, comment, creatorId, listId}) => {
   try {
-    await client.query(`
+    const {rows: [todo]} = await client.query(`
       INSERT INTO todos(title, comment, "creatorId", list_id)
-      VALUES ($1, $2, $3, $4);
-    `, [title, comment, creatorId, listId])
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+    `, [title, comment, creatorId, listId]);
+    
+    return todo;
   } catch(ex) {
     console.log('error in createTodo adapter!');
     console.error(ex);
@@ -52,10 +55,25 @@ const removeTodo = async (todoId, userId) => {
   }
 }
 
+const getTodoByTodoId = async (todoId) => {
+  try {
+    const {rows: [todo]} = await client.query(`
+      SELECT * FROM todos
+      WHERE todo_id = $1;
+    `, [todoId])
+    
+    return todo;
+  } catch(ex) {
+    console.log('error searching for todo by todoID in the DB adapter');
+    console.error(ex);
+  }
+}
+
 
 module.exports = {
   getAllTodos,
   createTodo,
   getTodosByUserId,
-  removeTodo
+  removeTodo,
+  getTodoByTodoId
 }

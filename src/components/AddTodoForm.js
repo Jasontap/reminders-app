@@ -6,9 +6,9 @@ function AddTodoForm({token, setAddTodo, getUsersTodoLists}) {
   const [todo, setTodo] = useState('');
   const {listId} = useParams();
   
-  function addTodo(e) {
+  async function addTodo(e) {
     e.preventDefault();
-    addTodoToList({todo, listId, token});
+    await addTodoToList({todo, listId, token});
     getUsersTodoLists();
     setAddTodo(false);
   }

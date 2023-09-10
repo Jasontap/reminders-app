@@ -1,10 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, createContext, useContext} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import AddTodoForm from './AddTodoForm';
 import { destroyTodo } from '../http-methods';
+import { TokenContext } from '../Context';
+import { EditTodo } from './';
 
-function Todos({todosToDisplay, token, navigate, getUsersTodoLists, setTodosToDisplay, todoLists}) {
+function Todos({todosToDisplay, navigate, getUsersTodoLists, setTodosToDisplay, todoLists}) {
   const [addTodo, setAddTodo] = useState(false);
+  const [todoEdit, setTodoEdit] = useState('');
+  const [timeoutId, setTimeoutId] = useState('');
+  const token = useContext(TokenContext);
   
   const {listId} = useParams();
   
@@ -13,10 +18,17 @@ function Todos({todosToDisplay, token, navigate, getUsersTodoLists, setTodosToDi
   }
   
   function deleteTodo(ev, todoId) {
-    setTimeout(async () => {
-      await destroyTodo({todoId, token});
-      getUsersTodoLists();
-    }, 1500);
+    if (ev.target.checked) {
+      setTimeoutId(
+        setTimeout(async () => {
+          await destroyTodo({todoId, token});
+          getUsersTodoLists();
+        }, 1500)
+      )
+    } else {
+      clearTimeout(timeoutId);
+      setTimeoutId('');
+    }
   }
   
   useEffect(() => {
@@ -25,6 +37,15 @@ function Todos({todosToDisplay, token, navigate, getUsersTodoLists, setTodosToDi
       setTodosToDisplay(list.todos)
     }
   }, [todoLists, listId])
+  
+  
+  //  && e.target.tagName !== "INPUT"
+    window.addEventListener("click", (e) => {
+      if (todoEdit && e.target.tagName !== "INPUT") {
+        console.log("todo", todoEdit);
+        // setTodoEdit("");
+      }
+    });
 
   return (
     <div>
@@ -33,8 +54,18 @@ function Todos({todosToDisplay, token, navigate, getUsersTodoLists, setTodosToDi
           return (
             <div key={todo.todo_id}>
               <div>
-                <input type='radio' onClick={(ev) => deleteTodo(ev, todo.todo_id)}/>
-                <h4>{todo.title}</h4>
+                <input 
+                  type='checkbox'
+                  onClick={(ev) => deleteTodo(ev, todo.todo_id)
+                }/>
+                {/* <Link to={`/lists/${listId}/todo/${todo.todo_id}/edit`}>{todo.title}</Link> */}
+                {
+                  todoEdit === todo.todo_id ? (
+                    <EditTodo todo={todo} setTodoEdit={setTodoEdit}/>
+                  ) : (
+                    <h4 onClick={() => setTodoEdit(todo.todo_id)}>{todo.title}</h4>
+                  )
+                }
               </div>
               {todo.comment && <p>{todo.comment}</p>}
             </div>
