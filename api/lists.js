@@ -28,12 +28,17 @@ listRouter.get('/', requireUser, async (req, res, next) => {
       })
     })
     
-    res.send(lists)
+    res.send({
+      message: "successfully fetched todo lists",
+      data: lists,
+      error: false
+    })
   } catch(ex) {
     console.log('error in GET lists handler');
     next({
       message: 'There was an error finding your lists!',
-      error: ex
+      error: true,
+      errorData: ex
     });
   }
 })

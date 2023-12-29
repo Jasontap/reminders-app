@@ -40,14 +40,15 @@ server.use(async (req, res, next) => {
     console.log('error attaching user to request.');
     next({
       message: 'Error attaching user to the request.',
-      error: ex
+      error: true,
+      errorCode: ex
     })
   }
 })
 
 server.use('/api', router);
 
-server.get('*', (req, res, next) => {
+server.use('*', (req, res, next) => {
   res.send({
     data: [],
     message: 'SOOORY THAT ROUTE DOES NOT EXIST....YET',

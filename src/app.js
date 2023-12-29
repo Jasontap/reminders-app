@@ -75,7 +75,7 @@ function App() {
               />
               <Routes>
                 <Route
-                  path="/lists/:listId"
+                  exact path="/lists/:listId"
                   element={
                     <Todos
                       todosToDisplay={todosToDisplay}
@@ -87,7 +87,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/lists/:listId/todo/:todoId/edit"
+                  exact path="/lists/:listId/todo/:todoId/edit"
                   element={<EditTodo />}
                 />
                 <Route path="*" element={<NoPage />} />
