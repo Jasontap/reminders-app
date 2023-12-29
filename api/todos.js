@@ -4,7 +4,8 @@ const {requireUser, Message} = require('./utils');
 const {
   getTodosByUserId,
   removeTodo,
-  getTodoByTodoId
+  getTodoByTodoId,
+  updateTodo
 } = require('../db');
 
 todosRouter.get('/:todoId', requireUser, async (req, res, next) => {
@@ -49,6 +50,7 @@ todosRouter.delete('/', requireUser, async (req, res, next) => {
 })
 
 todosRouter.put('/:todoId', requireUser, async (req, res, next) => {
+  
   try {
     const {todoId} = req.params;
     const {title } = req.body;
@@ -56,18 +58,20 @@ todosRouter.put('/:todoId', requireUser, async (req, res, next) => {
     
     if (todo && todo.creatorId === req.user.user_id) {
       const newTodo = {...todo, title};
+      await updateTodo(todoId, title);
+      
       res.send({
         data: newTodo,
         message: 'Thank you. Your todo has been updated!',
         error: false
       })
+    } else {  
+      res.send({
+        data: [],
+        message: 'Sorry, there was an issue finding your todo. Please refresh the page and try again.',
+        error: true
+      })
     }
-    
-    res.send({
-      data: [],
-      message: 'Sorry, there was an issue finding your todo. Please refresh the page and try again.',
-      error: true
-    })
   } catch(ex) {
     next(new Message([], 'error updating todo in todosRouter PUT', true))
   }

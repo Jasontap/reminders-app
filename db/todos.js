@@ -69,11 +69,26 @@ const getTodoByTodoId = async (todoId) => {
   }
 }
 
+const updateTodo = async (todoId, title) => {
+  try {
+    await client.query(`
+      UPDATE todos
+      SET title = $1
+      WHERE todo_id = $2
+      RETURNING *;
+    `, [title, todoId]);
+  } catch(ex) {
+    console.log('error updating todo in DB adapter');
+    console.error(ex);
+  }
+}
+
 
 module.exports = {
   getAllTodos,
   createTodo,
   getTodosByUserId,
   removeTodo,
-  getTodoByTodoId
+  getTodoByTodoId,
+  updateTodo
 }
