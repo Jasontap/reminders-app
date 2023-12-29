@@ -6,7 +6,7 @@ function Lists({todoLists}) {
   return (
     <div>
       {
-        todoLists && todoLists.map(list => {
+        todoLists.length && todoLists.map(list => {
           return (
             <Link 
               to={`/lists/${list.list_id}`} 

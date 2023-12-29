@@ -7,9 +7,12 @@ function Login({setToken, navigate}) {
   const [pwConfirm, setPWConfirm] = useState('');
   const [error, setError] = useState('');
   
+  console.log("Login Component ERROR", error)
+  
   async function login(e) {
     e.preventDefault();
     const response = await loginUser({username, password});
+    console.log("RESPONSE", response)
     if (response.error) {
       setError(response.message);
     } else {
@@ -31,11 +34,10 @@ function Login({setToken, navigate}) {
         onChange={(e)=> setPassword(e.target.value)}
         placeholder='Enter Password'
       />
-      {/* <input
-        type='password'
-        onChange={(e)=> setPWConfirm(e.target.value)}
-      /> */}
       <button onClick={(e)=> login(e)}>login</button>
+      {
+        error && <div>{error}</div>
+      }
     </form>
   )
 }

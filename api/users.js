@@ -52,7 +52,7 @@ userRouter.post('/login', async (req, res, next) => {
     const { name, email, password } = req.body;
     const results = await findUserByUsername(name);
     
-    if (await comparePassword(password, results.password)) {
+    if (results && await comparePassword(password, results.password)) {
       delete results.password;
       const token = jwt.sign(results, SECRET_KEY);
       res.send({
@@ -61,10 +61,10 @@ userRouter.post('/login', async (req, res, next) => {
         message: "You have successfully logged in!",
       });
     } else {
-      throw {
+      next({
         message: 'Incorrect credentials, please try again.',
         error: true
-      }
+      });
     };
     
   } catch(ex) {

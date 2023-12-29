@@ -1,6 +1,6 @@
 import React, {useState, useEffect, createContext} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import './app.css';
+import './App.css';
 import {
   fetchUsersTodoLists,
   fetchAllUsersTodos
@@ -35,9 +35,10 @@ function App() {
   
   function localTokenCheck() {
     const storedToken = window.localStorage.getItem('token');
+    
     if (storedToken) {
       setToken(storedToken);
-    }
+    } 
   }
   
   function logOut() {
