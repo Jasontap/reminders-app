@@ -46,7 +46,8 @@ function App() {
   }
   
   async function getUsersTodoLists() {
-    setTodoLists(await fetchUsersTodoLists(token));
+    const todoFetchResults = await fetchUsersTodoLists(token);
+    todoFetchResults.error ? logOut() : setTodoLists(todoFetchResults.data);
     const todos = await fetchAllUsersTodos(token);
     setAllTodos(todos.data);
   }
