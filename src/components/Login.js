@@ -7,12 +7,10 @@ function Login({setToken, navigate}) {
   const [pwConfirm, setPWConfirm] = useState('');
   const [error, setError] = useState('');
   
-  console.log("Login Component ERROR", error)
-  
   async function login(e) {
     e.preventDefault();
     const response = await loginUser({username, password});
-    console.log("RESPONSE", response)
+
     if (response.error) {
       setError(response.message);
     } else {

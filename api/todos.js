@@ -11,7 +11,7 @@ todosRouter.get('/:todoId', requireUser, async (req, res, next) => {
   try {
     const {todoId} = req.params;
     const todo = await getTodoByTodoId(todoId);
-    console.log(req.user)
+
     if (todo.creatorId === req.user.user_id) {
       res.send(new Message(todo, 'success fetching todo by todoID!', false))
     } else {

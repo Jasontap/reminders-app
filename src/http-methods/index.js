@@ -33,8 +33,6 @@ export async function fetchUsersTodoLists(token) {
     });
 
     const results = await response.json();
-    
-    console.log(results)
 
     return results;
   } catch(ex) {
