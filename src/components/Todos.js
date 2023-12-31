@@ -5,90 +5,99 @@ import { destroyTodo } from '../http-methods';
 import { TokenContext } from '../Context';
 import { EditTodo } from './';
 
-function Todos({todosToDisplay, navigate, getUsersTodoLists, setTodosToDisplay, todoLists}) {
+function Todos({
+  todosToDisplay,
+  navigate,
+  getUsersTodoLists,
+  setTodosToDisplay,
+  todoLists,
+}) {
   const [addTodo, setAddTodo] = useState(false);
-  const [todoEdit, setTodoEdit] = useState('');
-  const [timeoutId, setTimeoutId] = useState('');
+  const [todoEdit, setTodoEdit] = useState("");
+  const [timeoutId, setTimeoutId] = useState("");
   const token = useContext(TokenContext);
-  
-  const {listId} = useParams();
-  
+
+  const { listId } = useParams();
+
   function activateAddTodoForm() {
     setAddTodo(true);
   }
-  
+
   function deleteTodo(ev, todoId) {
     if (ev.target.checked) {
       setTimeoutId(
         setTimeout(async () => {
-          await destroyTodo({todoId, token});
+          await destroyTodo({ todoId, token });
           getUsersTodoLists();
         }, 1500)
-      )
+      );
     } else {
       clearTimeout(timeoutId);
-      setTimeoutId('');
+      setTimeoutId("");
     }
   }
-  
+
   useEffect(() => {
-    const list = todoLists.filter((list) => list.list_id === parseInt(listId))[0];
+    const list = todoLists.filter(
+      (list) => list.list_id === parseInt(listId)
+    )[0];
     if (list) {
-      setTodosToDisplay(list.todos)
+      setTodosToDisplay(list.todos);
     }
-  }, [todoLists, listId])
-  
-  
+  }, [todoLists, listId]);
+
   //  && e.target.tagName !== "INPUT"
-    window.addEventListener("click", (e) => {
-      if (todoEdit && e.target.tagName !== "INPUT") {
-        console.log("todo", todoEdit);
-        // setTodoEdit("");
-      }
-    });
+  window.addEventListener("click", (e) => {
+    if (todoEdit && e.target.tagName !== "INPUT") {
+      console.log("todo", todoEdit);
+      // setTodoEdit("");
+    }
+  });
 
   return (
     <div>
-      {
-        !!todosToDisplay.length && todosToDisplay.map(todo => {
+      {!!todosToDisplay.length &&
+        todosToDisplay.map((todo) => {
           return (
             <div key={todo.todo_id}>
               <div>
-                <input 
-                  type='checkbox'
-                  onClick={(ev) => deleteTodo(ev, todo.todo_id)
-                }/>
+                <input
+                  type="checkbox"
+                  onClick={(ev) => deleteTodo(ev, todo.todo_id)}
+                />
                 {/* <Link to={`/lists/${listId}/todo/${todo.todo_id}/edit`}>{todo.title}</Link> */}
-                {
-                  todoEdit === todo.todo_id ? (
-                    <EditTodo todo={todo} setTodoEdit={setTodoEdit}/>
-                  ) : (
-                    <h4 onClick={() => setTodoEdit(todo.todo_id)}>{todo.title}</h4>
-                  )
-                }
+                {todoEdit === todo.todo_id ? (
+                  <EditTodo
+                    todo={todo}
+                    setTodoEdit={setTodoEdit}
+                    getUsersTodoLists={getUsersTodoLists}
+                  />
+                ) : (
+                  <h4 onClick={() => setTodoEdit(todo.todo_id)}>
+                    {todo.title}
+                  </h4>
+                )}
               </div>
               {todo.comment && <p>{todo.comment}</p>}
             </div>
           );
-        })
-      }
-      {
-        addTodo && <AddTodoForm 
-          token={token} 
+        })}
+      {addTodo && (
+        <AddTodoForm
+          token={token}
           navigate={navigate}
           getUsersTodoLists={getUsersTodoLists}
           setAddTodo={setAddTodo}
           setTodosToDisplay={setTodosToDisplay}
           todoLists={todoLists}
         />
-      }
-      {
-        !!todosToDisplay.length && 
-          <button onClick={() => activateAddTodoForm()}>Add a todo</button>
-      }
-      <Link to='/'>Close List</Link>
+      )}
+      {!!todosToDisplay.length && (
+        <button onClick={() => activateAddTodoForm()}>Add a todo</button>
+      )}
+      <Link to="/">Close List</Link>
     </div>
-  )
+  );
 }
 
 
