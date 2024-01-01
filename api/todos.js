@@ -5,7 +5,8 @@ const {
   getTodosByUserId,
   removeTodo,
   getTodoByTodoId,
-  updateTodo
+  updateTodo,
+  attachTodoNote
 } = require('../db');
 
 todosRouter.get('/:todoId', requireUser, async (req, res, next) => {
@@ -74,6 +75,28 @@ todosRouter.put('/:todoId', requireUser, async (req, res, next) => {
     }
   } catch(ex) {
     next(new Message([], 'error updating todo in todosRouter PUT', true))
+  }
+})
+
+todosRouter.post('/:todoId', requireUser, async (req, res, next) => {
+  try {
+    const {todoId} = req.params;
+    const {noteText} = req.body;
+    const todo = await getTodoByTodoId(todoId);
+    
+    if (todo && todo.creatorId === req.user.user_id) {
+      await attachTodoNote(todoId, noteText);
+      
+      res.send({
+        data: [],
+        message: 'Your note has been added to your todo!',
+        error: false
+      })
+    } else {
+      throw "Sorry, there was an issue finding your todo. Please refresh the page and try again.";
+    }
+  } catch(ex) {
+    next(new Message([], typeof ex === 'string' ? ex : "error adding note to todo in todosRouter POST", true));
   }
 })
 

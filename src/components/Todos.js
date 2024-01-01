@@ -48,12 +48,12 @@ function Todos({
   }, [todoLists, listId]);
 
   //  && e.target.tagName !== "INPUT"
-  window.addEventListener("click", (e) => {
-    if (todoEdit && e.target.tagName !== "INPUT") {
-      console.log("todo", todoEdit);
-      // setTodoEdit("");
-    }
-  });
+  // window.addEventListener("click", (e) => {
+  //   if (todoEdit && e.target.tagName !== "INPUT") {
+  //     console.log("todo", todoEdit);
+  //     // setTodoEdit("");
+  //   }
+  // });
 
   return (
     <div>

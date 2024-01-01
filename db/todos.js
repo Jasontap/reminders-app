@@ -83,6 +83,20 @@ const updateTodo = async (todoId, title) => {
   }
 }
 
+const attachTodoNote = async (todoId, noteText) => {
+  try {
+    await client.query(`
+      UPDATE todos
+      SET comment = $1
+      WHERE todo_id = $2
+      RETURNING *;
+    `, [noteText, todoId]);
+    
+  } catch(ex) {
+    console.log('error attaching note to todo in DB adapter')
+    console.error(ex);
+  }
+}
 
 module.exports = {
   getAllTodos,
@@ -90,5 +104,6 @@ module.exports = {
   getTodosByUserId,
   removeTodo,
   getTodoByTodoId,
-  updateTodo
+  updateTodo,
+  attachTodoNote
 }
