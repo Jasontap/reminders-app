@@ -22,6 +22,29 @@ export async function loginUser({username, password}) {
   }
 }
 
+export async function registerUser({username, email, password}) {
+  try {
+    const response = await fetch(`${BASE_URL}/users/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: username,
+        password,
+        email
+      })
+    })
+    
+    const results = await response.json();
+    
+    return results;
+    
+  } catch(ex) {
+    console.log('error in loginUser http method')
+  }
+}
+
 
 export async function fetchUsersTodoLists(token) {
   try {
