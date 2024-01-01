@@ -64,24 +64,30 @@ function Todos({
             <div key={todo.todo_id}>
               <div>
                 <input
+                  value="delete"
                   type="checkbox"
+                  name="delete"
                   onClick={(ev) => deleteTodo(ev, todo.todo_id)}
                 />
+                <label htmlFor="delete">delete</label>
                 {/* <Link to={`/lists/${listId}/todo/${todo.todo_id}/edit`}>{todo.title}</Link> */}
                 {todoEdit === todo.todo_id ? (
                   <EditTodo
                     todo={todo}
+                    todoNote={todo.comment}
                     setTodoEdit={setTodoEdit}
                     getUsersTodoLists={getUsersTodoLists}
                     setErrorMessage={setErrorMessage}
                   />
                 ) : (
-                  <h4 onClick={() => setTodoEdit(todo.todo_id)}>
-                    {todo.title}
-                  </h4>
+                  <div onClick={() => setTodoEdit(todo.todo_id)}>
+                    <h4>
+                      {todo.title}
+                    </h4>
+                    {todo.comment && <p>{todo.comment}</p>}
+                  </div>
                 )}
               </div>
-              {todo.comment && <p>{todo.comment}</p>}
             </div>
           );
         })}

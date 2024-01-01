@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import { TokenContext } from '../Context';
 import { updateTodo, addTodoNote } from '../http-methods';
 
-function EditTodo({ todo, setTodoEdit, getUsersTodoLists, setErrorMessage}) {
+function EditTodo({ todo, setTodoEdit, getUsersTodoLists, setErrorMessage, todoNote}) {
   const { todo_id, title } = todo;
-  const [todoTitle, setTodoTitle] = useState(todo.title);
-  const [noteText, setNoteText] = useState("");
+  const [todoTitle, setTodoTitle] = useState(title);
+  const [noteText, setNoteText] = useState(todoNote);
   const token = useContext(TokenContext);
   // const {listId, todoId} = useParams();
 
@@ -35,7 +35,7 @@ function EditTodo({ todo, setTodoEdit, getUsersTodoLists, setErrorMessage}) {
         />
         <input
           type="text"
-          placeholder="Add Note"
+          placeholder="add note"
           value={noteText}
           onChange={(e) => {
             setNoteText(e.target.value);
