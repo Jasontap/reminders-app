@@ -15,6 +15,7 @@ function Todos({
   const [addTodo, setAddTodo] = useState(false);
   const [todoEdit, setTodoEdit] = useState("");
   const [timeoutId, setTimeoutId] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const token = useContext(TokenContext);
 
   const { listId } = useParams();
@@ -56,6 +57,7 @@ function Todos({
 
   return (
     <div>
+      {errorMessage && <h1>{errorMessage}</h1>}
       {!!todosToDisplay.length &&
         todosToDisplay.map((todo) => {
           return (
@@ -71,6 +73,7 @@ function Todos({
                     todo={todo}
                     setTodoEdit={setTodoEdit}
                     getUsersTodoLists={getUsersTodoLists}
+                    setErrorMessage={setErrorMessage}
                   />
                 ) : (
                   <h4 onClick={() => setTodoEdit(todo.todo_id)}>

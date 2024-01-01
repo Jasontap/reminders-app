@@ -131,3 +131,22 @@ export async function updateTodo(todoId, title, token) {
     console.log('error in updateTodo http method')
   }
 }
+
+export async function addTodoNote(todoId, noteText, token) {
+  try {
+    const response = await fetch(`${BASE_URL}/todos/${todoId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        noteText
+      })
+    })
+    
+    return response.json();
+  } catch(ex) {
+    console.lgo('error in addTodoNote http method');
+  }
+}
