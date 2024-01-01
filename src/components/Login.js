@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {loginUser} from '../http-methods';
 
-function Login({setToken, navigate}) {
+function Login({setToken, navigate, signUp=false}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [pwConfirm, setPWConfirm] = useState('');
@@ -20,24 +20,42 @@ function Login({setToken, navigate}) {
     }
   }
   
+  async function registerUser(e) {
+    e.preventDefault();
+    if (password === pwConfirm) {
+      // setup signup functionality
+    } else {
+      setError('Passwords do not match.')
+    }
+  }
+  
   return (
     <form>
       <input
-        type='text'
-        onChange={(e)=> setUsername(e.target.value)}
-        placeholder='Enter Username'
+        type="text"
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Enter Username"
       />
       <input
-        type='password'
-        onChange={(e)=> setPassword(e.target.value)}
-        placeholder='Enter Password'
+        type="password"
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Enter Password"
       />
-      <button onClick={(e)=> login(e)}>login</button>
-      {
-        error && <div>{error}</div>
-      }
+      {signUp ? (
+        <>
+          <input
+            type="password"
+            onChange={(e) => setPWConfirm(e.target.value)}
+            placeholder="confirm password"
+          />
+          <button onClick={(e) => registerUser(e)}>signUp</button>
+        </>
+      ) : (
+        <button onClick={(e) => login(e)}>login</button>
+      )}
+      {error && <div>{error}</div>}
     </form>
-  )
+  );
 }
 
 export default Login;

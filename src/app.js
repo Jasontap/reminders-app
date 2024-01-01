@@ -10,7 +10,8 @@ import {
   Login,
   Lists,
   Todos,
-  EditTodo
+  EditTodo,
+  HomePage
 } from './components';
 
 import {
@@ -65,7 +66,31 @@ function App() {
   
   return (
     <div>
-      {!token && <Login setToken={setToken} navigate={navigate} />}
+      {!token && 
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <HomePage />
+            }
+          />
+          <Route
+            exact
+            path="/login"
+            element={
+              <Login setToken={setToken} navigate={navigate} />
+            }
+          />
+          <Route
+            exact
+            path="/signup"
+            element={
+              <Login setToken={setToken} navigate={navigate} signUp={true}/>
+            }
+          />
+        </Routes>
+      }
 
       {token && (
         <UsersTodoLists.Provider value={todoLists}>
