@@ -1,5 +1,5 @@
 import React, {useState, useEffect, createContext} from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Link } from 'react-router-dom';
 import './App.css';
 import {
   fetchUsersTodoLists,
@@ -11,7 +11,8 @@ import {
   Lists,
   Todos,
   EditTodo,
-  HomePage
+  HomePage,
+  Redirect
 } from './components';
 
 import {
@@ -21,7 +22,9 @@ import {
 
 
 function NoPage() {
-  return <div>NO PAGE HERE</div>
+  return (
+    <Link to={"/"}>Click to go Home</Link>
+  )
 }
 
 
@@ -66,31 +69,24 @@ function App() {
   
   return (
     <div>
-      {!token && 
+      {!token && (
         <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <HomePage />
-            }
-          />
+          <Route exact path="/" element={<HomePage />} />
           <Route
             exact
             path="/login"
-            element={
-              <Login setToken={setToken} navigate={navigate} />
-            }
+            element={<Login setToken={setToken} navigate={navigate} />}
           />
           <Route
             exact
             path="/signup"
             element={
-              <Login setToken={setToken} navigate={navigate} signUp={true}/>
+              <Login setToken={setToken} navigate={navigate} signUp={true} />
             }
           />
+          <Route path="*" element={<NoPage />} />
         </Routes>
-      }
+      )}
 
       {token && (
         <UsersTodoLists.Provider value={todoLists}>
