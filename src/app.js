@@ -1,5 +1,6 @@
 import React, {useState, useEffect, createContext} from 'react';
 import { Routes, Route, useNavigate, Link } from 'react-router-dom';
+import { Button } from '@mui/material'
 import './App.css';
 import {
   fetchUsersTodoLists,
@@ -10,9 +11,7 @@ import {
   Login,
   Lists,
   Todos,
-  EditTodo,
-  HomePage,
-  Redirect
+  WelcomePage,
 } from './components';
 
 import {
@@ -71,7 +70,7 @@ function App() {
     <div>
       {!token && (
         <Routes>
-          <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/" element={<WelcomePage />} />
           <Route
             exact
             path="/login"
@@ -91,7 +90,7 @@ function App() {
       {token && (
         <UsersTodoLists.Provider value={todoLists}>
           <TokenContext.Provider value={token}>
-            <button onClick={() => logOut()}>Log Out</button>
+            <Button onClick={() => logOut()}>Log Out</Button>
             <Lists
               todoLists={todoLists}
               setTodosToDisplay={setTodosToDisplay}
@@ -110,12 +109,6 @@ function App() {
                   />
                 }
               />
-              <Route
-                exact
-                path="/lists/:listId/todo/:todoId/edit"
-                element={<EditTodo />}
-              />
-              <Route path="*" element={<NoPage />} />
             </Routes>
           </TokenContext.Provider>
         </UsersTodoLists.Provider>

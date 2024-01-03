@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {loginUser, registerUser} from '../http-methods';
+import { Button, TextField } from "@mui/material";
 
 function Login({setToken, navigate, signUp=false}) {
   const [email, setEmail] = useState('');
@@ -45,34 +46,42 @@ function Login({setToken, navigate, signUp=false}) {
   
   return (
     <form>
-      {signUp &&
-        <input
+      {signUp && (
+        <TextField
+          required
           type="email"
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter Email"
+          label="Enter Email"
+          variant="outlined"
         />
-      }
-      <input
-        type="text"
+      )}
+      <TextField
+        required={signUp}
         onChange={(e) => setUsername(e.target.value)}
-        placeholder="Enter Username"
+        label="Enter Username"
+        variant="outlined"
       />
-      <input
+      <TextField
         type="password"
+        required={signUp}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Enter Password"
+        label="Enter Password"
+        variant="outlined"
       />
       {signUp ? (
         <>
-          <input
+          <TextField
             type="password"
+            required
             onChange={(e) => setPWConfirm(e.target.value)}
-            placeholder="confirm password"
+            label="confirm password"
+            variant="outlined"
           />
-          <button onClick={(e) => signUpUser(e)}>signUp</button>
+          <Button variant="outlined" onClick={(e) => signUpUser(e)}>signUp
+          </Button>
         </>
       ) : (
-        <button onClick={(e) => login(e)}>login</button>
+        <Button variant="outlined" onClick={(e) => login(e)}>login</Button>
       )}
       {error && <div>{error}</div>}
     </form>
