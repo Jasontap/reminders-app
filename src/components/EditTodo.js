@@ -3,7 +3,14 @@ import { useParams } from 'react-router-dom';
 import { TokenContext } from '../Context';
 import { updateTodo, addTodoNote } from '../http-methods';
 
-function EditTodo({ todo, setTodoEdit, getUsersTodoLists, setErrorMessage, todoNote}) {
+function EditTodo({ 
+  todo, 
+  setTodoEdit, 
+  getUsersTodoLists, 
+  setErrorMessage, 
+  todoNote,
+  deleteTodo
+}) {
   const { todo_id, title } = todo;
   const [todoTitle, setTodoTitle] = useState(title);
   const [noteText, setNoteText] = useState(todoNote);
@@ -12,6 +19,10 @@ function EditTodo({ todo, setTodoEdit, getUsersTodoLists, setErrorMessage, todoN
 
   async function submitTodo(e) {
     e.preventDefault();
+    if (todoTitle === '') {
+      e.target.checked = true;
+      deleteTodo(e, todo_id)
+    }
     await updateTodo(todo_id, todoTitle, token);
     if (noteText) {
       const addNoteResponse = await addTodoNote(todo_id, noteText, token);

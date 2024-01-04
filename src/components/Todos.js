@@ -4,6 +4,7 @@ import AddTodoForm from './AddTodoForm';
 import { destroyTodo } from '../http-methods';
 import { TokenContext } from '../Context';
 import { EditTodo } from './';
+import './CSS/todos.css';
 
 function Todos({
   todosToDisplay,
@@ -56,20 +57,19 @@ function Todos({
   // });
 
   return (
-    <div>
+    <div id="todo-list">
       {errorMessage && <h1>{errorMessage}</h1>}
       {!!todosToDisplay.length &&
         todosToDisplay.map((todo) => {
           return (
             <div key={todo.todo_id}>
-              <div>
+              <div class='todo-item-container'>
                 <input
                   value="delete"
                   type="checkbox"
                   name="delete"
                   onClick={(ev) => deleteTodo(ev, todo.todo_id)}
                 />
-                <label htmlFor="delete">delete</label>
                 {/* <Link to={`/lists/${listId}/todo/${todo.todo_id}/edit`}>{todo.title}</Link> */}
                 {todoEdit === todo.todo_id ? (
                   <EditTodo
@@ -78,6 +78,7 @@ function Todos({
                     setTodoEdit={setTodoEdit}
                     getUsersTodoLists={getUsersTodoLists}
                     setErrorMessage={setErrorMessage}
+                    deleteTodo={deleteTodo}
                   />
                 ) : (
                   <div onClick={() => setTodoEdit(todo.todo_id)}>

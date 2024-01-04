@@ -90,7 +90,7 @@ function App() {
       {token && (
         <UsersTodoLists.Provider value={todoLists}>
           <TokenContext.Provider value={token}>
-            <Button onClick={() => logOut()}>Log Out</Button>
+            <Button variant="outlined" onClick={() => logOut()}>Log Out</Button>
             <Lists
               todoLists={todoLists}
               setTodosToDisplay={setTodosToDisplay}
