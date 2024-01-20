@@ -74,8 +74,7 @@ const updateTodo = async (todoId, title) => {
     await client.query(`
       UPDATE todos
       SET title = $1
-      WHERE todo_id = $2
-      RETURNING *;
+      WHERE todo_id = $2;
     `, [title, todoId]);
   } catch(ex) {
     console.log('error updating todo in DB adapter');
@@ -88,12 +87,25 @@ const attachTodoNote = async (todoId, noteText) => {
     await client.query(`
       UPDATE todos
       SET comment = $1
-      WHERE todo_id = $2
-      RETURNING *;
+      WHERE todo_id = $2;
     `, [noteText, todoId]);
     
   } catch(ex) {
     console.log('error attaching note to todo in DB adapter')
+    console.error(ex);
+  }
+}
+
+const clearTodoNote = async (todoId) => {
+  try {
+    await client.query(`
+    UPDATE todos
+    SET comment = ''
+    WHERE todo_id = $1;
+    `, [todoId]);
+    
+  } catch(ex) {
+    console.log("error clearing note from todo in DB adapter");
     console.error(ex);
   }
 }
@@ -105,5 +117,6 @@ module.exports = {
   removeTodo,
   getTodoByTodoId,
   updateTodo,
-  attachTodoNote
+  attachTodoNote,
+  clearTodoNote
 }

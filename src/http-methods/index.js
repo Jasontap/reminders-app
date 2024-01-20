@@ -173,3 +173,16 @@ export async function addTodoNote(todoId, noteText, token) {
     console.lgo('error in addTodoNote http method');
   }
 }
+
+export async function clearTodoNote(todoId, token) {
+  try {
+    await fetch(`${BASE_URL}/todos/${todoId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }})
+  } catch(ex) {
+    console.lgo('error in clearTodoNote http method');
+  }
+}

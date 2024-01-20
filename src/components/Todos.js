@@ -25,7 +25,10 @@ function Todos({
     setAddTodo(true);
   }
 
-  function deleteTodo(ev, todoId) {
+  async function deleteTodo(ev, todoId, quickDelete = false) {
+    if (quickDelete) {
+      await destroyTodo({todoId, token})
+    }
     if (ev.target.checked) {
       setTimeoutId(
         setTimeout(async () => {
@@ -63,7 +66,7 @@ function Todos({
         todosToDisplay.map((todo) => {
           return (
             <div key={todo.todo_id}>
-              <div class='todo-item-container'>
+              <div className='todo-item-container'>
                 <input
                   value="delete"
                   type="checkbox"

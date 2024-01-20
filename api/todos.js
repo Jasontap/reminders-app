@@ -6,7 +6,8 @@ const {
   removeTodo,
   getTodoByTodoId,
   updateTodo,
-  attachTodoNote
+  attachTodoNote,
+  clearTodoNote
 } = require('../db');
 
 todosRouter.get('/:todoId', requireUser, async (req, res, next) => {
@@ -97,6 +98,36 @@ todosRouter.post('/:todoId', requireUser, async (req, res, next) => {
     }
   } catch(ex) {
     next(new Message([], typeof ex === 'string' ? ex : "error adding note to todo in todosRouter POST", true));
+  }
+})
+
+todosRouter.put('/:todoId/note', requireUser, async (req, res, next) => {
+  try {
+    const { todoId } = req.params;
+    const todo = await getTodoByTodoId(todoId);
+    
+    if (todo && todo.creatorId === req.user.user_id) {
+      await clearTodoNote(todoId);
+
+      res.send({
+        data: [],
+        message: "Your note has been cleared from your todo!",
+        error: false,
+      });
+    } else {
+      throw "Sorry, there was an issue finding your todo. Please refresh the page and try again.";
+    }
+    
+  } catch(ex) {
+    next(
+      new Message(
+        [],
+        typeof ex === "string"
+          ? ex
+          : "error clearing note from todo in todosRouter put /:todoId/note",
+        true
+      )
+    );
   }
 })
 

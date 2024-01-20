@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { TokenContext } from '../Context';
-import { updateTodo, addTodoNote } from '../http-methods';
+import { updateTodo, addTodoNote, clearTodoNote } from '../http-methods';
 
 function EditTodo({ 
   todo, 
@@ -21,9 +21,18 @@ function EditTodo({
     e.preventDefault();
     if (todoTitle === '') {
       e.target.checked = true;
-      deleteTodo(e, todo_id)
+      deleteTodo(e, todo_id, true);
+      setTodoEdit("");
+      await getUsersTodoLists(token);
+      return;
     }
+    if (noteText === '') {
+      // *****************************************
+      // need to delete the note text from the todo
+    }
+    
     await updateTodo(todo_id, todoTitle, token);
+    
     if (noteText) {
       const addNoteResponse = await addTodoNote(todo_id, noteText, token);
       if (addNoteResponse.error) {
