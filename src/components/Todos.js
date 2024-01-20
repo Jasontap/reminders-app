@@ -107,7 +107,7 @@ function Todos({
       {!!todosToDisplay.length && (
         <button onClick={() => activateAddTodoForm()}>Add a todo</button>
       )}
-      <Link to="/">Close List</Link>
+      <Link to="/lists">Close List</Link>
     </div>
   );
 }

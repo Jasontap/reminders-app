@@ -91,11 +91,17 @@ function App() {
         <UsersTodoLists.Provider value={todoLists}>
           <TokenContext.Provider value={token}>
             <Button variant="outlined" onClick={() => logOut()}>Log Out</Button>
-            <Lists
-              todoLists={todoLists}
-              setTodosToDisplay={setTodosToDisplay}
-            />
             <Routes>
+              <Route
+                exact
+                path="/lists"
+                element={
+                  <Lists
+                    todoLists={todoLists}
+                    setTodosToDisplay={setTodosToDisplay}
+                  />
+                }
+              />
               <Route
                 exact
                 path="/lists/:listId"
