@@ -176,7 +176,7 @@ export async function addTodoNote(todoId, noteText, token) {
 
 export async function clearTodoNote(todoId, token) {
   try {
-    await fetch(`${BASE_URL}/todos/${todoId}`, {
+    await fetch(`${BASE_URL}/todos/${todoId}/note`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

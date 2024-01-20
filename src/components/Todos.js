@@ -77,7 +77,6 @@ function Todos({
                 {todoEdit === todo.todo_id ? (
                   <EditTodo
                     todo={todo}
-                    todoNote={todo.comment}
                     setTodoEdit={setTodoEdit}
                     getUsersTodoLists={getUsersTodoLists}
                     setErrorMessage={setErrorMessage}

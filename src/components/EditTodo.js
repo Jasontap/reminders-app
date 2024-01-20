@@ -8,12 +8,11 @@ function EditTodo({
   setTodoEdit, 
   getUsersTodoLists, 
   setErrorMessage, 
-  todoNote,
   deleteTodo
 }) {
-  const { todo_id, title } = todo;
+  const { todo_id, title, comment } = todo;
   const [todoTitle, setTodoTitle] = useState(title);
-  const [noteText, setNoteText] = useState(todoNote);
+  const [noteText, setNoteText] = useState(comment);
   const token = useContext(TokenContext);
   // const {listId, todoId} = useParams();
 
@@ -26,21 +25,24 @@ function EditTodo({
       await getUsersTodoLists(token);
       return;
     }
-    if (noteText === '') {
-      // *****************************************
-      // need to delete the note text from the todo
-    }
     
-    await updateTodo(todo_id, todoTitle, token);
     
     if (noteText) {
       const addNoteResponse = await addTodoNote(todo_id, noteText, token);
       if (addNoteResponse.error) {
         setErrorMessage(addNoteResponse.message);
+        return
       }
+    } else {
+      await clearTodoNote(todo_id, token);
+      setTodoEdit("");
+      await getUsersTodoLists(token);
     }
+    
+    await updateTodo(todo_id, todoTitle, token);
     setTodoEdit("");
     await getUsersTodoLists(token);
+    retrun;
   }
 
   return (
