@@ -2,6 +2,16 @@ const { Client } = require('pg');
 
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/todo-list';
 
-const client = new Client({connectionString});
+// Mac client
+// const client = new Client({connectionString, password: 'master'});
+
+// Windows client
+const client = new Client({
+  host: 'localhost',
+  port: 5432,
+  database: 'todo-list',
+  user: 'postgres',
+  password: 'master',
+})
 
 module.exports = client;

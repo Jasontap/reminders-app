@@ -156,15 +156,15 @@ const buildDB = async() => {
     console.log('Starting to Build the Database!');
     
     client.connect();
-    console.log('-----------------------------------------------')
-    await dropTables();
-    console.log('-----------------------------------------------')
-    await createTables();
-    console.log('-----------------------------------------------')
-    await createInitialUsers();
-    console.log('-----------------------------------------------')
-    await createInitialTodos();
-    console.log('-----------------------------------------------')
+    // console.log('-----------------------------------------------')
+    // await dropTables();
+    // console.log('-----------------------------------------------')
+    // await createTables();
+    // console.log('-----------------------------------------------')
+    // await createInitialUsers();
+    // console.log('-----------------------------------------------')
+    // await createInitialTodos();
+    // console.log('-----------------------------------------------')
     
     console.log('Finished Building DB!');
   } catch(ex) {
