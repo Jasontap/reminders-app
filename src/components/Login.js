@@ -18,7 +18,7 @@ function Login({setToken, navigate, signUp=false}) {
     } else {
       setToken(response.data);
       window.localStorage.setItem('token', response.data);
-      navigate('/todos')
+      navigate('/lists')
     }
   }
   
@@ -34,7 +34,7 @@ function Login({setToken, navigate, signUp=false}) {
         } else {
           setToken(response.data);
           window.localStorage.setItem("token", response.data);
-          navigate("/todos");
+          navigate("/lists");
         }
       // } else {
       //   setError('Passord is not long enough.');

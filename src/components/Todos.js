@@ -47,8 +47,10 @@ function Todos({
       (list) => list.list_id === parseInt(listId)
     )[0];
     if (list) {
-      setTodosToDisplay(list.todos);
-    }
+      if(list.todos) {
+        setTodosToDisplay(list.todos);
+      }
+    } 
   }, [todoLists, listId]);
 
   //  && e.target.tagName !== "INPUT"
@@ -62,7 +64,7 @@ function Todos({
   return (
     <div id="todo-list">
       {errorMessage && <h1>{errorMessage}</h1>}
-      {!!todosToDisplay.length &&
+      {
         todosToDisplay.map((todo) => {
           return (
             <div key={todo.todo_id}>
@@ -104,9 +106,7 @@ function Todos({
           todoLists={todoLists}
         />
       )}
-      {!!todosToDisplay.length && (
         <button onClick={() => activateAddTodoForm()}>Add a todo</button>
-      )}
       <Link to="/lists">Close List</Link>
     </div>
   );
