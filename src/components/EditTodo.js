@@ -42,7 +42,7 @@ function EditTodo({
     await updateTodo(todo_id, todoTitle, token);
     setTodoEdit("");
     await getUsersTodoLists(token);
-    retrun;
+    return;
   }
 
   return (

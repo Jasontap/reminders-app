@@ -3,9 +3,9 @@ const { Client } = require('pg');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/todo-list';
 
 // Mac client
-// const client = new Client({connectionString, password: 'master'});
+// const client = new Client({connectionString});
 
-// Windows client
+// Universal client
 const client = new Client({
   host: 'localhost',
   port: 5432,

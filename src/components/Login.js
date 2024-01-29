@@ -45,7 +45,7 @@ function Login({setToken, navigate, signUp=false}) {
   }
   
   return (
-    <form>
+    <form onSubmit={signUp ? signUpUser : login}>
       {signUp && (
         <TextField
           required
@@ -77,11 +77,11 @@ function Login({setToken, navigate, signUp=false}) {
             label="confirm password"
             variant="outlined"
           />
-          <Button variant="outlined" onClick={(e) => signUpUser(e)}>signUp
+          <Button variant="outlined" type="submit">signUp
           </Button>
         </>
       ) : (
-        <Button variant="outlined" onClick={(e) => login(e)}>login</Button>
+        <Button variant="outlined" type="submit">login</Button>
       )}
       {error && <div>{error}</div>}
     </form>

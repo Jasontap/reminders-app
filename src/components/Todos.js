@@ -47,9 +47,7 @@ function Todos({
       (list) => list.list_id === parseInt(listId)
     )[0];
     if (list) {
-      if(list.todos) {
-        setTodosToDisplay(list.todos);
-      }
+      setTodosToDisplay(list.todos);
     } 
   }, [todoLists, listId]);
 
