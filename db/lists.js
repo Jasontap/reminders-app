@@ -1,12 +1,14 @@
 const client = require('./client');
 
-const createList = async ({title, ownerId}) => {
+const createList = async ({title, ownerID}) => {
   try {
     const {rows: [list]} = await client.query(`
       INSERT INTO lists (title, owner_id)
       VALUES ($1, $2)
       RETURNING *;
-    `, [title, ownerId]);
+    `, [title, ownerID]);
+  
+    return list;
   
   } catch(ex) {
     console.log('error creating list in the DB adapter');

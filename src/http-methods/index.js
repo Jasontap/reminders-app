@@ -186,3 +186,22 @@ export async function clearTodoNote(todoId, token) {
     console.lgo('error in clearTodoNote http method');
   }
 }
+
+export async function createTodoList({title, token}) {
+  try {
+    const response = await fetch(`${BASE_URL}/lists`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        title
+      })
+    })
+    
+    return response.json();
+  } catch(ex) {
+    console.log('error in createTodoList http method');
+  }
+}

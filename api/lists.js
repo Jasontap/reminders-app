@@ -4,7 +4,8 @@ const listRouter = Router();
 const {
   getListsByUserId,
   getTodosByUserId,
-  createTodo
+  createTodo,
+  createList
 } = require('../db')
 
 const {requireUser} = require('./utils');
@@ -39,6 +40,27 @@ listRouter.get('/', requireUser, async (req, res, next) => {
       message: 'There was an error finding your lists!',
       error: true,
       errorData: ex
+    });
+  }
+})
+
+listRouter.post('/', requireUser, async (req, res, next) => {
+  try {
+    const {title} = req.body;
+    const {user} = req;
+    console.log(user)
+    const list = await createList({title, ownerID: user.user_id});
+    
+    res.send({
+      message: "successfully created todo list",
+      data: list,
+      error: false,
+    });
+  } catch(ex) {
+    console.log("error creating a todolist in list router");
+    next({
+      message: "error creating a todolist in list router",
+      error: ex,
     });
   }
 })

@@ -12,6 +12,7 @@ import {
   Lists,
   Todos,
   WelcomePage,
+  AddListForm
 } from './components';
 
 import {
@@ -33,6 +34,7 @@ function App() {
   const [todoLists, setTodoLists] = useState([]);
   const [allTodos, setAllTodos] = useState([]);
   const [todosToDisplay, setTodosToDisplay] = useState([]);
+  const [addList, setAddList] = useState(false);
   
   const navigate = useNavigate();
   
@@ -119,6 +121,14 @@ function App() {
           </TokenContext.Provider>
         </UsersTodoLists.Provider>
       )}
+      {addList && 
+        <AddListForm 
+          token={token} 
+          setAddList={setAddList} 
+          getUsersTodoLists={getUsersTodoLists}
+        />
+      }
+      <Button onClick={() => setAddList(true)}>Add New List</Button>
     </div>
   );
 }
