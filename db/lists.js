@@ -1,6 +1,7 @@
 const client = require('./client');
 
 const createList = async ({title, ownerID}) => {
+  console.log(title, ownerID)
   try {
     const {rows: [list]} = await client.query(`
       INSERT INTO lists (title, owner_id)
