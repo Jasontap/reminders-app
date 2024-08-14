@@ -5,7 +5,8 @@ const {
   getListsByUserId,
   getTodosByUserId,
   createTodo,
-  createList
+  createList,
+  deleteList
 } = require('../db')
 
 const {requireUser} = require('./utils');
@@ -89,5 +90,24 @@ listRouter.post('/:listId', requireUser, async (req, res, next) => {
   }
 })
 
+listRouter.delete('/:listId', requireUser, async (req, res, next) => {
+  try {
+    const {listId} = req.params;
+    const {user} = req;
+    
+    await deleteList({listId, userId: user.user_id});
+    
+    res.send({
+      message: 'success deleting todo!'
+    })
+    
+  } catch(ex) {
+    console.log("error deleting list in list router");
+    next({
+      message: "error deleting list in list router",
+      error: ex,
+    });
+  }
+})
 
 module.exports = listRouter;

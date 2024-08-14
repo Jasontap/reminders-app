@@ -205,3 +205,19 @@ export async function createTodoList({title, token}) {
     console.log('error in createTodoList http method');
   }
 }
+
+export async function destroyList({listId, token}) {
+  try {
+    const response = await fetch(`${BASE_URL}/lists/${listId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    
+    return response.json();
+  } catch(ex) {
+    console.log('error in destroyList http method');
+  }
+}

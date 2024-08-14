@@ -1,7 +1,7 @@
 import React, {useEffect, useState, createContext, useContext} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import AddTodoForm from './AddTodoForm';
-import { destroyTodo } from '../http-methods';
+import { destroyTodo, destroyList } from '../http-methods';
 import { TokenContext } from '../Context';
 import { EditTodo } from './';
 import { Button } from '@mui/material';
@@ -12,7 +12,7 @@ function Todos({
   navigate,
   getUsersTodoLists,
   setTodosToDisplay,
-  todoLists,
+  todoLists
 }) {
   const [addTodo, setAddTodo] = useState(false);
   const [todoEdit, setTodoEdit] = useState("");
@@ -21,10 +21,6 @@ function Todos({
   const token = useContext(TokenContext);
 
   const { listId } = useParams();
-
-  function activateAddTodoForm() {
-    setAddTodo(true);
-  }
 
   async function deleteTodo(ev, todoId, quickDelete = false) {
     if (quickDelete) {
@@ -41,6 +37,12 @@ function Todos({
       clearTimeout(timeoutId);
       setTimeoutId("");
     }
+  }
+  
+  async function deleteList(listId) {
+    await destroyList({listId, token});
+    getUsersTodoLists();
+    navigate('/lists');
   }
 
   useEffect(() => {
@@ -105,10 +107,16 @@ function Todos({
       <Button
         variant="contained"
         color="ochre"
-        onClick={() => activateAddTodoForm()}
+        onClick={() => setAddTodo(!addTodo)}
       >
         Add a todo
       </Button>
+      <Button 
+        variant="contained" 
+        color="ochre"
+        onClick={() => {
+          deleteList(listId);
+        }}>Delete List</Button>
       <Link to="/lists">
         <Button variant="contained" color="ochre">Close List</Button>
       </Link>

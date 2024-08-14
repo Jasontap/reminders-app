@@ -31,7 +31,28 @@ const getListsByUserId = async (userId) => {
   }
 }
 
+const deleteList = async ({listId, userId}) => {
+  try {
+    await client.query(`
+      DELETE FROM todos
+      WHERE list_id = $1
+      AND "creatorId" = $2;
+    `, [listId, userId]);
+    
+    await client.query(`
+      DELETE FROM lists
+      WHERE list_id = $1
+      AND "owner_id" = $2;
+    `, [listId, userId])
+    
+  } catch (ex) {
+    console.log("error deleting list in DB adapter.");
+    console.error(ex);
+  }
+}
+
 module.exports = {
   createList,
-  getListsByUserId
+  getListsByUserId,
+  deleteList
 }
