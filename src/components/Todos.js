@@ -15,6 +15,7 @@ function Todos({
   todoLists
 }) {
   const [addTodo, setAddTodo] = useState(false);
+  const [listDetails, setListDetails] = useState({});
   const [todoEdit, setTodoEdit] = useState("");
   const [timeoutId, setTimeoutId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -51,6 +52,7 @@ function Todos({
     )[0];
     if (curList) {
       setTodosToDisplay(curList.todos);
+      setListDetails(curList);
     } 
   }, [todoLists, listId]);
 
@@ -65,6 +67,7 @@ function Todos({
   return (
     <div id="todo-list">
       {errorMessage && <h1>{errorMessage}</h1>}
+      <h1>{listDetails.title}</h1>
       {todosToDisplay.map((todo) => {
         return (
           <div key={todo.todo_id}>

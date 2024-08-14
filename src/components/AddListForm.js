@@ -7,7 +7,6 @@ function AddListForm({ token, setAddList, getUsersTodoLists }) {
   async function addList(e) {
     e.preventDefault();
     const results = await createTodoList({ title, token });
-    console.log(results)
     getUsersTodoLists();
     setAddList(false);
   }
