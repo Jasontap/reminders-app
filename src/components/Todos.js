@@ -20,6 +20,8 @@ function Todos({
   const token = useContext(TokenContext);
 
   const { listId } = useParams();
+  
+  console.log(todoLists)
 
   function activateAddTodoForm() {
     setAddTodo(true);
@@ -43,11 +45,11 @@ function Todos({
   }
 
   useEffect(() => {
-    const list = todoLists.filter(
+    const curList = todoLists.filter(
       (list) => list.list_id === parseInt(listId)
     )[0];
-    if (list) {
-      setTodosToDisplay(list.todos);
+    if (curList) {
+      setTodosToDisplay(curList.todos);
     } 
   }, [todoLists, listId]);
 
@@ -93,7 +95,8 @@ function Todos({
               </div>
             </div>
           );
-        })}
+        })
+      }
       {addTodo && (
         <AddTodoForm
           token={token}

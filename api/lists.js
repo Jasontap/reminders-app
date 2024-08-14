@@ -27,7 +27,10 @@ listRouter.get('/', requireUser, async (req, res, next) => {
           }
         }
       })
+      if (!list.todos) list.todos = [];
     })
+    
+    console.log(lists)
     
     res.send({
       message: "successfully fetched todo lists",
