@@ -1,5 +1,6 @@
 import React, {useState, useEffect, createContext} from 'react';
 import { Routes, Route, useNavigate, Link } from 'react-router-dom';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button } from '@mui/material'
 import './App.css';
 import {
@@ -26,6 +27,17 @@ function NoPage() {
     <Link to={"/"}>Click to go Home</Link>
   )
 }
+
+const theme = createTheme({
+  palette: {
+    ochre: {
+      main: "#7b7d97",
+      light: "#E9DB5D",
+      dark: "#dc67ea",
+      contrastText: "#242105",
+    },
+  },
+});
 
 
 function App() {
@@ -69,67 +81,71 @@ function App() {
   }, [token]);
   
   return (
-    <div>
-      {!token && (
-        <Routes>
-          <Route exact path="/" element={<WelcomePage />} />
-          <Route
-            exact
-            path="/login"
-            element={<Login setToken={setToken} navigate={navigate} />}
-          />
-          <Route
-            exact
-            path="/signup"
-            element={
-              <Login setToken={setToken} navigate={navigate} signUp={true} />
-            }
-          />
-          <Route path="*" element={<NoPage />} />
-        </Routes>
-      )}
+    <ThemeProvider theme={theme}>
+      <div>
+        {!token && (
+          <Routes>
+            <Route exact path="/" element={<WelcomePage />} />
+            <Route
+              exact
+              path="/login"
+              element={<Login setToken={setToken} navigate={navigate} />}
+            />
+            <Route
+              exact
+              path="/signup"
+              element={
+                <Login setToken={setToken} navigate={navigate} signUp={true} />
+              }
+            />
+            <Route path="*" element={<NoPage />} />
+          </Routes>
+        )}
 
-      {token && (
-        <UsersTodoLists.Provider value={todoLists}>
-          <TokenContext.Provider value={token}>
-            <Button variant="outlined" onClick={() => logOut()}>Log Out</Button>
-            <Routes>
-              <Route
-                exact
-                path="/lists"
-                element={
-                  <Lists
-                    todoLists={todoLists}
-                    setTodosToDisplay={setTodosToDisplay}
-                  />
-                }
-              />
-              <Route
-                exact
-                path="/lists/:listId"
-                element={
-                  <Todos
-                    todosToDisplay={todosToDisplay}
-                    navigate={navigate}
-                    getUsersTodoLists={getUsersTodoLists}
-                    setTodosToDisplay={setTodosToDisplay}
-                    todoLists={todoLists}
-                  />
-                }
-              />
-            </Routes>
-          </TokenContext.Provider>
-        </UsersTodoLists.Provider>
-      )}
-      {addList && 
-        <AddListForm 
-          token={token} 
-          setAddList={setAddList} 
-          getUsersTodoLists={getUsersTodoLists}
-        />
-      }
-      <Button onClick={() => setAddList(true)}>Add New List</Button>
-    </div>
+        {token && (
+          <UsersTodoLists.Provider value={todoLists}>
+            <TokenContext.Provider value={token}>
+              <Button variant="contained" color="ochre" onClick={() => logOut()}>
+                Log Out
+              </Button>
+              <Routes>
+                <Route
+                  exact
+                  path="/lists"
+                  element={
+                    <Lists
+                      todoLists={todoLists}
+                      setTodosToDisplay={setTodosToDisplay}
+                    />
+                  }
+                />
+                <Route
+                  exact
+                  path="/lists/:listId"
+                  element={
+                    <Todos
+                      todosToDisplay={todosToDisplay}
+                      navigate={navigate}
+                      getUsersTodoLists={getUsersTodoLists}
+                      setTodosToDisplay={setTodosToDisplay}
+                      todoLists={todoLists}
+                    />
+                  }
+                />
+              </Routes>
+            </TokenContext.Provider>
+          </UsersTodoLists.Provider>
+        )}
+        {addList && (
+          <AddListForm
+            token={token}
+            setAddList={setAddList}
+            getUsersTodoLists={getUsersTodoLists}
+          />
+        )}
+        <Button variant="contained" color="ochre" onClick={() => setAddList(!addList)}>Add New List</Button>
+      </div>
+    </ThemeProvider>
   );
 }
 

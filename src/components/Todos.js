@@ -4,6 +4,7 @@ import AddTodoForm from './AddTodoForm';
 import { destroyTodo } from '../http-methods';
 import { TokenContext } from '../Context';
 import { EditTodo } from './';
+import { Button } from '@mui/material';
 import './CSS/todos.css';
 
 function Todos({
@@ -20,8 +21,6 @@ function Todos({
   const token = useContext(TokenContext);
 
   const { listId } = useParams();
-  
-  console.log(todoLists)
 
   function activateAddTodoForm() {
     setAddTodo(true);
@@ -64,39 +63,35 @@ function Todos({
   return (
     <div id="todo-list">
       {errorMessage && <h1>{errorMessage}</h1>}
-      {
-        todosToDisplay.map((todo) => {
-          return (
-            <div key={todo.todo_id}>
-              <div className='todo-item-container'>
-                <input
-                  value="delete"
-                  type="checkbox"
-                  name="delete"
-                  onClick={(ev) => deleteTodo(ev, todo.todo_id)}
+      {todosToDisplay.map((todo) => {
+        return (
+          <div key={todo.todo_id}>
+            <div className="todo-item-container">
+              <input
+                value="delete"
+                type="checkbox"
+                name="delete"
+                onClick={(ev) => deleteTodo(ev, todo.todo_id)}
+              />
+              {/* <Link to={`/lists/${listId}/todo/${todo.todo_id}/edit`}>{todo.title}</Link> */}
+              {todoEdit === todo.todo_id ? (
+                <EditTodo
+                  todo={todo}
+                  setTodoEdit={setTodoEdit}
+                  getUsersTodoLists={getUsersTodoLists}
+                  setErrorMessage={setErrorMessage}
+                  deleteTodo={deleteTodo}
                 />
-                {/* <Link to={`/lists/${listId}/todo/${todo.todo_id}/edit`}>{todo.title}</Link> */}
-                {todoEdit === todo.todo_id ? (
-                  <EditTodo
-                    todo={todo}
-                    setTodoEdit={setTodoEdit}
-                    getUsersTodoLists={getUsersTodoLists}
-                    setErrorMessage={setErrorMessage}
-                    deleteTodo={deleteTodo}
-                  />
-                ) : (
-                  <div onClick={() => setTodoEdit(todo.todo_id)}>
-                    <h4>
-                      {todo.title}
-                    </h4>
-                    {todo.comment && <p>{todo.comment}</p>}
-                  </div>
-                )}
-              </div>
+              ) : (
+                <div onClick={() => setTodoEdit(todo.todo_id)}>
+                  <h4>{todo.title}</h4>
+                  {todo.comment && <p>{todo.comment}</p>}
+                </div>
+              )}
             </div>
-          );
-        })
-      }
+          </div>
+        );
+      })}
       {addTodo && (
         <AddTodoForm
           token={token}
@@ -107,8 +102,16 @@ function Todos({
           todoLists={todoLists}
         />
       )}
-        <button onClick={() => activateAddTodoForm()}>Add a todo</button>
-      <Link to="/lists">Close List</Link>
+      <Button
+        variant="contained"
+        color="ochre"
+        onClick={() => activateAddTodoForm()}
+      >
+        Add a todo
+      </Button>
+      <Link to="/lists">
+        <Button variant="contained" color="ochre">Close List</Button>
+      </Link>
     </div>
   );
 }
