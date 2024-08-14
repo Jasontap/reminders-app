@@ -5,3 +5,4 @@ export {default as EditTodo} from './EditTodo';
 export {default as WelcomePage} from './WelcomePage';
 export {default as Redirect} from './Redirect';
 export {default as AddListForm} from './AddListForm';
+export {default as EditListName} from './EditListName';

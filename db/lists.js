@@ -51,8 +51,26 @@ const deleteList = async ({listId, userId}) => {
   }
 }
 
+const editListName = async ({listName, listId, userId}) => {
+  try {
+    const {rows: [updatedList]} = await client.query(`
+      UPDATE lists
+      SET title = $1
+      WHERE list_id = $2
+      AND "owner_id" = $3
+      RETURNING *;
+    `, [listName, listId, userId])
+    
+    return updatedList;
+  } catch(ex) {
+    console.log("error updating list name in DB adapter.");
+    console.error(ex);
+  }
+}
+
 module.exports = {
   createList,
   getListsByUserId,
-  deleteList
+  deleteList,
+  editListName
 }

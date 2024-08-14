@@ -6,7 +6,8 @@ const {
   getTodosByUserId,
   createTodo,
   createList,
-  deleteList
+  deleteList,
+  editListName
 } = require('../db')
 
 const {requireUser} = require('./utils');
@@ -105,6 +106,29 @@ listRouter.delete('/:listId', requireUser, async (req, res, next) => {
     console.log("error deleting list in list router");
     next({
       message: "error deleting list in list router",
+      error: ex,
+    });
+  }
+})
+
+listRouter.put('/:listId', requireUser, async (req, res, next) => {
+  try {
+    const {listId} = req.params;
+    const {user} = req;
+    const {listName} = req.body;
+    
+    const updatedList = await editListName({listName, listId, userId: user.user_id});
+    
+    res.send({
+      data: updatedList,
+      error: false,
+      message: "successfully updated list name!",
+    });
+    
+  } catch(ex) {
+    console.log("error updating list title in list router");
+    next({
+      message: "error updating list title in list router",
       error: ex,
     });
   }

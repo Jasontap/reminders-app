@@ -221,3 +221,20 @@ export async function destroyList({listId, token}) {
     console.log('error in destroyList http method');
   }
 }
+
+export async function updateListName({listDetails, token}) {
+  try {
+    const response = await fetch(`${BASE_URL}/lists/${listDetails.list_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        listName: listDetails.title
+      })
+    })
+  } catch(ex) {
+    console.log('error in updateListName http method');
+  }
+}

@@ -3,7 +3,7 @@ import {Link, useParams} from 'react-router-dom';
 import AddTodoForm from './AddTodoForm';
 import { destroyTodo, destroyList } from '../http-methods';
 import { TokenContext } from '../Context';
-import { EditTodo } from './';
+import { EditTodo, EditListName } from './';
 import { Button } from '@mui/material';
 import './CSS/todos.css';
 
@@ -15,8 +15,9 @@ function Todos({
   todoLists
 }) {
   const [addTodo, setAddTodo] = useState(false);
-  const [listDetails, setListDetails] = useState({});
   const [todoEdit, setTodoEdit] = useState("");
+  const [listDetails, setListDetails] = useState({});
+  const [listNameEdit, setListNameEdit] = useState(false);
   const [timeoutId, setTimeoutId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const token = useContext(TokenContext);
@@ -45,6 +46,10 @@ function Todos({
     getUsersTodoLists();
     navigate('/lists');
   }
+  
+  async function activateListNameEdit() {
+    
+  }
 
   useEffect(() => {
     const curList = todoLists.filter(
@@ -67,7 +72,14 @@ function Todos({
   return (
     <div id="todo-list">
       {errorMessage && <h1>{errorMessage}</h1>}
-      <h1>{listDetails.title}</h1>
+      {listNameEdit ? (
+        <EditListName
+          listDetails={listDetails}
+          setListNameEdit={setListNameEdit}
+        />
+      ) : (
+        <h1 onClick={() => setListNameEdit(!listNameEdit)}>{listDetails.title}</h1>
+      )}
       {todosToDisplay.map((todo) => {
         return (
           <div key={todo.todo_id}>
