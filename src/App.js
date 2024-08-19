@@ -61,6 +61,7 @@ function App() {
   function logOut() {
     setToken('');
     window.localStorage.setItem('token', '');
+    navigate('/');
   }
   
   async function getUsersTodoLists() {
@@ -133,17 +134,17 @@ function App() {
                   }
                 />
               </Routes>
+              {addList && (
+                <AddListForm
+                  token={token}
+                  setAddList={setAddList}
+                  getUsersTodoLists={getUsersTodoLists}
+                />
+              )}
+              <Button variant="contained" color="ochre" onClick={() => setAddList(!addList)}>Add New List</Button>
             </TokenContext.Provider>
           </UsersTodoLists.Provider>
         )}
-        {addList && (
-          <AddListForm
-            token={token}
-            setAddList={setAddList}
-            getUsersTodoLists={getUsersTodoLists}
-          />
-        )}
-        <Button variant="contained" color="ochre" onClick={() => setAddList(!addList)}>Add New List</Button>
       </div>
     </ThemeProvider>
   );

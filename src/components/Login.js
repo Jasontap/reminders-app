@@ -50,6 +50,7 @@ function Login({setToken, navigate, signUp=false}) {
         <TextField
           required
           type="email"
+          autoFocus
           onChange={(e) => setEmail(e.target.value)}
           label="Enter Email"
           variant="outlined"
@@ -57,6 +58,7 @@ function Login({setToken, navigate, signUp=false}) {
       )}
       <TextField
         required={signUp}
+        autoFocus={!signUp}
         onChange={(e) => setUsername(e.target.value)}
         label="Enter Username"
         variant="outlined"
@@ -77,8 +79,7 @@ function Login({setToken, navigate, signUp=false}) {
             label="confirm password"
             variant="outlined"
           />
-          <Button variant="outlined" type="submit">signUp
-          </Button>
+          <Button variant="outlined" type="submit">signUp</Button>
         </>
       ) : (
         <Button variant="outlined" type="submit">login</Button>
