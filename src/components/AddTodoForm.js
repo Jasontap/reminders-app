@@ -19,6 +19,7 @@ function AddTodoForm({token, setAddTodo, getUsersTodoLists}) {
     >
       <input
         type='text'
+        autoFocus
         onChange={(e) => {
           e.preventDefault();
           setTodo(e.target.value)

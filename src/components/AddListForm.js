@@ -15,6 +15,7 @@ function AddListForm({ token, setAddList, getUsersTodoLists }) {
     <form onSubmit={(e) => addList(e)}>
       <input
         type="text"
+        autoFocus
         onChange={(e) => {
           e.preventDefault();
           setTitle(e.target.value);
