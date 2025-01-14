@@ -6,6 +6,8 @@ import { TokenContext } from '../Context';
 import { EditTodo, EditListName } from './';
 import { Button } from '@mui/material';
 import './CSS/todos.css';
+import { ThemeProvider } from '@emotion/react';
+import { scaryTheme } from '../muiThemes';
 
 function Todos({
   todosToDisplay,
@@ -78,7 +80,9 @@ function Todos({
           setListNameEdit={setListNameEdit}
         />
       ) : (
-        <h1 onClick={() => setListNameEdit(!listNameEdit)}>{listDetails.title}</h1>
+        <h1 onClick={() => setListNameEdit(!listNameEdit)}>
+          {listDetails.title}
+        </h1>
       )}
       {todosToDisplay.map((todo) => {
         return (
@@ -126,15 +130,28 @@ function Todos({
       >
         Add a todo
       </Button>
-      <Button 
-        variant="contained" 
+      <ThemeProvider theme={scaryTheme}>
+        <Button
+          variant="contained"
+          color="ochre"
+          onClick={() => {
+            deleteList(listId);
+          }}
+        >
+          Delete List
+        </Button>
+      </ThemeProvider>
+      {/* <Link to="/lists"> */}
+      <Button
+        variant="contained"
         color="ochre"
         onClick={() => {
-          deleteList(listId);
-        }}>Delete List</Button>
-      <Link to="/lists">
-        <Button variant="contained" color="ochre">Close List</Button>
-      </Link>
+          navigate("/lists");
+        }}
+      >
+        Close List
+      </Button>
+      {/* </Link> */}
     </div>
   );
 }

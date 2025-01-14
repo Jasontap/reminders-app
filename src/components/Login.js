@@ -45,7 +45,7 @@ function Login({setToken, navigate, signUp=false}) {
   }
   
   return (
-    <form onSubmit={signUp ? signUpUser : login}>
+    <form id="login-form" onSubmit={signUp ? signUpUser : login}>
       {signUp && (
         <TextField
           required

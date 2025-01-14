@@ -1,6 +1,6 @@
 import React, {useState, useEffect, createContext} from 'react';
 import { Routes, Route, useNavigate, Link } from 'react-router-dom';
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { Button } from '@mui/material'
 import './App.css';
 import {
@@ -21,6 +21,10 @@ import {
   UsersTodoLists
 } from './Context';
 
+import {
+  mainTheme
+} from './muiThemes';
+
 
 function NoPage() {
   return (
@@ -28,16 +32,16 @@ function NoPage() {
   )
 }
 
-const theme = createTheme({
-  palette: {
-    ochre: {
-      main: "#7b7d97",
-      light: "#E9DB5D",
-      dark: "#dc67ea",
-      contrastText: "#242105",
-    },
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     ochre: {
+//       main: "#7b7d97",
+//       light: "#E9DB5D",
+//       dark: "#dc67ea",
+//       contrastText: "#242105",
+//     },
+//   },
+// });
 
 
 function App() {
@@ -82,7 +86,7 @@ function App() {
   }, [token]);
   
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={mainTheme}>
       <div id="app">
         {!token && (
           <Routes>
