@@ -6,16 +6,36 @@
 body {
   background-color: #7e7f8b;
 }
+
 #container {
+  display: flex;
+  justify-content: center;
+}
+
+#app {
   margin: 2rem;
   border: solid black 2px;
   border-radius: 10px;
   padding: 2rem;
-  max-width: 300px;
+  width: 300px;
   min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
+/* .app {
+  
+} */
 
 a {
   text-decoration: none;
   color: #1976d2;
+}
+
+
+@media screen and (max-width: 600px) {
+  body {
+    background-color: olive;
+  }
 }

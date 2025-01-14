@@ -83,7 +83,7 @@ function App() {
   
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div id="app">
         {!token && (
           <Routes>
             <Route exact path="/" element={<WelcomePage />} />

@@ -84,6 +84,7 @@ function Login({setToken, navigate, signUp=false}) {
       ) : (
         <Button variant="outlined" type="submit">login</Button>
       )}
+      <Button variant="outlined" onClick={() => navigate('/')}>Go Back</Button>
       {error && <div>{error}</div>}
     </form>
   );
