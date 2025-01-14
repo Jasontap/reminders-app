@@ -26,11 +26,11 @@ function WelcomePage({ setToken, navigate }) {
     <div>
       <h1>Todo App</h1>
       <form>
-        <Button variant="outlined">
-          <Link to="/login">Login</Link>
+        <Button variant="contained" color="ochre" onClick={() => navigate("/login")}>
+          Login
         </Button>
-        <Button variant="outlined">
-          <Link to="/signup">Sign Up</Link>
+        <Button variant="contained" color="ochre" onClick={() => navigate("/signup")}>
+          Sign Up
         </Button>
         {error && <div>{error}</div>}
       </form>

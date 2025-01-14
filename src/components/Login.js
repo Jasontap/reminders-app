@@ -79,12 +79,12 @@ function Login({setToken, navigate, signUp=false}) {
             label="confirm password"
             variant="outlined"
           />
-          <Button variant="outlined" type="submit">signUp</Button>
+          <Button variant="contained" color="ochre" type="submit">signUp</Button>
         </>
       ) : (
-        <Button variant="outlined" type="submit">login</Button>
+        <Button variant="contained" color="ochre" type="submit">login</Button>
       )}
-      <Button variant="outlined" onClick={() => navigate('/')}>Go Back</Button>
+      <Button variant="contained" color="ochre" onClick={() => navigate('/')}>Go Back</Button>
       {error && <div>{error}</div>}
     </form>
   );

@@ -86,7 +86,7 @@ function App() {
       <div id="app">
         {!token && (
           <Routes>
-            <Route exact path="/" element={<WelcomePage />} />
+            <Route exact path="/" element={<WelcomePage navigate={navigate} />} />
             <Route
               exact
               path="/login"
