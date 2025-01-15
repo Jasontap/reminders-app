@@ -17,15 +17,16 @@ function Todos({
   todoLists
 }) {
   const [addTodo, setAddTodo] = useState(false);
-  const [todoEdit, setTodoEdit] = useState("");
-  const [listDetails, setListDetails] = useState({});
   const [listNameEdit, setListNameEdit] = useState(false);
+  const [editList, setEditList] = useState(false);
+  const [listDetails, setListDetails] = useState({});
+  const [todoEdit, setTodoEdit] = useState("");
   const [timeoutId, setTimeoutId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const token = useContext(TokenContext);
 
   const { listId } = useParams();
-
+  
   async function deleteTodo(ev, todoId, quickDelete = false) {
     if (quickDelete) {
       await destroyTodo({todoId, token})
@@ -130,17 +131,29 @@ function Todos({
       >
         Add a todo
       </Button>
-      <ThemeProvider theme={scaryTheme}>
-        <Button
-          variant="contained"
-          color="ochre"
-          onClick={() => {
-            deleteList(listId);
-          }}
-        >
-          Delete List
-        </Button>
-      </ThemeProvider>
+      {editList && (
+        <>
+          <ThemeProvider theme={scaryTheme}>
+            <Button
+              variant="contained"
+              color="ochre"
+              onClick={() => {
+                deleteList(listId);
+              }}
+            >
+              Delete List
+            </Button>
+          </ThemeProvider>
+        </>
+      )}
+      <Button 
+        variant="contained"
+        color="ochre"
+        onClick={() => setEditList(!editList)}
+      >
+        {editList ? "Done" : "Edit"}
+      </Button>
+        
       {/* <Link to="/lists"> */}
       <Button
         variant="contained"

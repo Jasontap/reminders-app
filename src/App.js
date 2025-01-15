@@ -32,17 +32,6 @@ function NoPage() {
   )
 }
 
-// const theme = createTheme({
-//   palette: {
-//     ochre: {
-//       main: "#7b7d97",
-//       light: "#E9DB5D",
-//       dark: "#dc67ea",
-//       contrastText: "#242105",
-//     },
-//   },
-// });
-
 
 function App() {
   const [token, setToken] = useState('');
