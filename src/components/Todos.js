@@ -18,7 +18,7 @@ function Todos({
 }) {
   const [addTodo, setAddTodo] = useState(false);
   const [listNameEdit, setListNameEdit] = useState(false);
-  const [editList, setEditList] = useState(false);
+  const [listDelete, setListDelete] = useState(false);
   const [listDetails, setListDetails] = useState({});
   const [todoEdit, setTodoEdit] = useState("");
   const [timeoutId, setTimeoutId] = useState("");
@@ -26,6 +26,13 @@ function Todos({
   const token = useContext(TokenContext);
 
   const { listId } = useParams();
+  
+  const modal = document.getElementById("deleteConfModal");
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
   
   async function deleteTodo(ev, todoId, quickDelete = false) {
     if (quickDelete) {
@@ -50,6 +57,10 @@ function Todos({
     navigate('/lists');
   }
   
+  function verifyDeleteList(listId) {
+    
+  }
+  
   async function activateListNameEdit() {
     
   }
@@ -64,13 +75,6 @@ function Todos({
     } 
   }, [todoLists, listId]);
 
-  //  && e.target.tagName !== "INPUT"
-  // window.addEventListener("click", (e) => {
-  //   if (todoEdit && e.target.tagName !== "INPUT") {
-  //     console.log("todo", todoEdit);
-  //     // setTodoEdit("");
-  //   }
-  // });
 
   return (
     <div id="todo-list">
@@ -131,30 +135,7 @@ function Todos({
       >
         Add a todo
       </Button>
-      {editList && (
-        <>
-          <ThemeProvider theme={scaryTheme}>
-            <Button
-              variant="contained"
-              color="ochre"
-              onClick={() => {
-                deleteList(listId);
-              }}
-            >
-              Delete List
-            </Button>
-          </ThemeProvider>
-        </>
-      )}
-      <Button 
-        variant="contained"
-        color="ochre"
-        onClick={() => setEditList(!editList)}
-      >
-        {editList ? "Done" : "Edit"}
-      </Button>
-        
-      {/* <Link to="/lists"> */}
+
       <Button
         variant="contained"
         color="ochre"
@@ -164,7 +145,30 @@ function Todos({
       >
         Close List
       </Button>
-      {/* </Link> */}
+      <ThemeProvider theme={scaryTheme}>
+        <div id="deleteConfModal" className="modal">
+
+          <div className="modal-content">
+            <Button 
+              variant="contained"
+              color="ochre"
+              className="close"
+              onClick={()=> {
+                modal.style.display = "none";
+                deleteList(listId);
+              }}
+            >Delete List</Button>
+            <p>Are you sure you want to delete this list?</p>
+          </div>
+
+        </div>
+      </ThemeProvider>
+
+      <Button
+        variant="contained"
+        color="ochre"
+        onClick={() => modal.style.display = "block"}
+      >Delete List</Button>
     </div>
   );
 }
