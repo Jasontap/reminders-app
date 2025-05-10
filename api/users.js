@@ -42,7 +42,7 @@ userRouter.post('/register', async (req, res, next) => {
       message: 'You have successfully registered!'
     })
   } catch(ex) {
-    console.log('error posting a user in server');
+    console.log('error registering a user in server');
     next(ex);
   }
 })
@@ -55,6 +55,7 @@ userRouter.post('/login', async (req, res, next) => {
     if (results && await comparePassword(password, results.password)) {
       delete results.password;
       const token = jwt.sign(results, SECRET_KEY);
+
       res.send({
         data: token,
         error: false,
@@ -68,7 +69,7 @@ userRouter.post('/login', async (req, res, next) => {
     };
     
   } catch(ex) {
-    console.log('error posting a user in server');
+    console.log('error logging in a user in server');
     next(ex);
   }
 })
